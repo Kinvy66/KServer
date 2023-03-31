@@ -30,8 +30,11 @@ depcomp
 *.xcodeproj
 
 #.idea
+.vscode
 cmake-build-debug
 build
 CMakeFiles
-bin
+bin/test*
+bin/*.txt
 lib
+doc

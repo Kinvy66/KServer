@@ -7,17 +7,33 @@
 */
 #include <iostream>
 #include "../sylar/log.h"
+#include "../sylar/util.h"
+
 
 int main(int argc, char** argv) {
 
     sylar::Logger::ptr logger(new sylar::Logger);
     logger->addAppender(sylar::LogAppender::ptr(new sylar::StdoutAppender));
 
-    sylar::LogEvent::ptr event(new sylar::LogEvent(__FILE__, __LINE__, 0, 1, 2, time(0)));
+    sylar::FileLogAppender::ptr file_appender(new sylar::FileLogAppender("./log.txt"));
 
-    logger->log(sylar::LogLevel::DEBUG, event);
+    sylar::LoggerFormatter::ptr fmt(new sylar::LoggerFormatter("%d%T%m%n"));
+    file_appender->setFormatter(fmt);
+    file_appender->setLevel(sylar::LogLevel::ERROR);
 
-    std::cout << "Hello " << std::endl;
+    logger->addAppender(file_appender);
+//    sylar::LogEvent::ptr event(new sylar::LogEvent(__FILE__, __LINE__, 0, sylar::GetThreadId(), sylar::GetFiberId(), time(0)));
+//    event->getSS() << "Hello ";
+//    logger->log(sylar::LogLevel::DEBUG, event);
+
+    SYLAR_LOG_INFO(logger) << "test info";
+    SYLAR_LOG_ERROR(logger) << "test error";
+
+    SYLAR_LOG_FMT_ERROR(logger, "test fmt error %s", "aa");
+
+    auto  l = sylar::LoggerMgr::GetInstance()->getLogger("xx");
+    SYLAR_LOG_INFO(l) << "xxx";
+
 
     return 0;
 }

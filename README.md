@@ -1,4 +1,6 @@
-# sylar
+# C++ 服务器框架开发
+
+参考： https://github.com/sylar-yin/sylar
 
 ## 环境
 
