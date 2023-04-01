@@ -388,15 +388,6 @@ void LoggerFormatter::init() {
         //std::cout << "(" << std::get<0>(i) << ") - (" << std::get<1>(i) << ") - (" << std::get<2>(i) << ")" << std::endl;
     }
 
-    // %m -- 消息体
-    // %p -- level
-    // %r -- 启动后的时间
-    // %c -- 日志名称
-    // %t -- 线程id
-    // %n -- 回车
-    // %d -- 时间
-    // %f -- 文件名
-    // %l -- 行号
 }
 
 LoggerManager::LoggerManager() {

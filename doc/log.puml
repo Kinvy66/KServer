@@ -1,0 +1,46 @@
+@startuml
+
+title 日志模块类图
+
+class LoggerManager
+class Logger {
+    -LogFormatter m_formatter
+    -Logger m_root
+    -LogAppender m_appenders
+
+    +public log(...)
+}
+class LogEventWarp
+class LogEvent
+class LogFormatter {
+    +public format(...)
+}
+abstract LogAppender {
+    +public LogFormatter::FormatItem m_formatItems;
+    +public log(...)
+}
+class StdoutLogAppender
+class FileAppender
+interface LogFormatter::FormatItem {
+    +public format(...)
+}
+class MessageFormatItem implements LogFormatter::FormatItem
+class LevelFormatItem implements LogFormatter::FormatItem
+class ElapseFormatItem implements LogFormatter::FormatItem
+class NameFormatItem implements LogFormatter::FormatItem
+class FiberFormatItem implements LogFormatter::FormatItem
+class ThreadNameFormatItem implements LogFormatter::FormatItem
+
+
+LoggerManager "1" *-- "m" Logger
+Logger "1" *-- "1" Logger
+Logger "1" *-- "1" LogFormatter
+Logger "1" *-- "m" LogAppender
+LogAppender  "1" *-- "1" LogFormatter
+LogAppender  <|-- StdoutLogAppender
+LogAppender  <|-- FileAppender
+LogFormatter "1" *-- "m" LogFormatter::FormatItem
+LogEventWarp "1" *-- "1" LogEvent
+
+
+@enduml
