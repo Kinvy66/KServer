@@ -4,9 +4,12 @@ project(sylar)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -rdynamic -O0 -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function")
 
+include_directories(.)
+
 set(LIB_SRC
         sylar/log.cpp
-        sylar/util.cpp)
+        sylar/util.cpp
+        sylar/config.cpp)
 
 add_library(sylar SHARED ${LIB_SRC})
 #add_library(sylar_static STATIC ${LIB_SRC})
@@ -15,6 +18,10 @@ add_library(sylar SHARED ${LIB_SRC})
 add_executable(test tests/test.cpp)
 add_dependencies(test sylar)
 target_link_libraries(test sylar)
+
+add_executable(test_config tests/test_config.cpp)
+add_dependencies(test_config sylar)
+target_link_libraries(test_config sylar yaml-cpp)
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 

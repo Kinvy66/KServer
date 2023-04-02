@@ -19,6 +19,7 @@
 #include <iostream>
 #include <cstdarg>
 #include <map>
+#include "util.h"
 #include "singleton.h"
 
 /**
@@ -89,6 +90,7 @@
  */
 #define SYLAR_LOG_FMT_FATAL(logger, fmt, ...) SYLAR_LOG_FMT_LEVEL(logger, sylar::LogLevel::FATAL, fmt, __VA_ARGS__)
 
+#define SYLAR_LOG_ROOT() sylar::LoggerMgr::GetInstance()->getRoot()
 
 namespace sylar {
 
@@ -532,6 +534,7 @@ public:
      * @brief 初始化
      */
     void init();
+    Logger::ptr getRoot() const { return m_root; }
 
 private:
     std::map<std::string, Logger::ptr> m_loggers;   // 日志容器

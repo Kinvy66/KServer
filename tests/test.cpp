@@ -6,8 +6,8 @@
 * @description: 
 */
 #include <iostream>
-#include "../sylar/log.h"
-#include "../sylar/util.h"
+#include "sylar/log.h"
+#include "sylar/util.h"
 
 void test01() {
     sylar::Logger::ptr logger(new sylar::Logger);
