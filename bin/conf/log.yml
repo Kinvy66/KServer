@@ -17,4 +17,17 @@ logs:
 system:
     port: 9900
     value: 42
-    int_vec: [10, 20]
+    int_vec:
+      - 10
+      - 30
+    int_list: [40, 20, 50]
+    int_set: [41, 21, 51, 21]
+    int_uset: [41, 21, 51, 21]
+    str_int_map:
+      k: 30
+      k2: 20
+      k3: 10
+    str_int_umap:
+      k: 130
+      k2: 120
+      k3: 110
