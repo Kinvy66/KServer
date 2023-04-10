@@ -49,10 +49,14 @@ void test02() {
     SYLAR_LOG_INFO(l) << "xxx";
 }
 
+void test03() {
+    SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "hello";
+}
+
 
 int main(int argc, char** argv) {
 
-    test01();
+    test03();
 
     return 0;
 }

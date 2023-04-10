@@ -1,0 +1,20 @@
+@startuml
+title 配置模块
+
+
+
+class MyTemplateClass
+
+class MyTemplateClass<T>
+
+'MyTemplateClass <|-- MyTemplateClass<T>
+'
+'class MyTemplateClassInt {
+'    // implementation for int type
+'}
+'
+'MyTemplateClassInt <|-- MyTemplateClass<int>
+
+
+
+@enduml

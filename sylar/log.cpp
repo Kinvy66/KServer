@@ -1,15 +1,6 @@
-/**
-* @author: Kinvy
-* @email: Kinvy66@163.com
-* @date: 2023/3/30 13:11
-* @file: log.cpp
-* @description: 
-*/
-
 #include "log.h"
 #include <ctime>
 #include <functional>
-
 
 namespace sylar {
 
