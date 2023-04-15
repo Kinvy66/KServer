@@ -92,9 +92,12 @@
 
 #define SYLAR_LOG_ROOT() sylar::LoggerMgr::GetInstance()->getRoot()
 
+#define SYLAR_LOG_NAME(name) sylar::LoggerMgr::GetInstance()->getLogger(name)
+
 namespace sylar {
 
 class Logger;
+class LoggerManger;
 
 /**
  * @brief 日志级别
@@ -119,6 +122,8 @@ public:
      * @return
      */
     static const char* ToString(LogLevel::Level level);
+
+    static LogLevel::Level FromString(const std::string& str);
 };
 
 /**
@@ -242,6 +247,8 @@ public:
 
     /**
      * @brief 析构函数
+     * @details
+     *      在析构调用m_event->getLogger()->log() 将日志输出到对应的Appender
      */
     ~LogEventWrap();
 
@@ -337,9 +344,13 @@ public:
      */
     void init();
 
+    bool isError() const { return m_error; }
+    const std::string getPattern() const { return m_pattern; }
+
 private:
     std::string m_pattern;      // 日志模板
     std::vector<FormatItem::ptr> m_items;  // 日志格式解析后的格式
+    bool m_error = false;
 };
 
 /**
@@ -353,6 +364,8 @@ public:
      * @brief 析构函数
      */
     virtual ~LogAppender() = default;
+
+    virtual std::string toYamlString() = 0;
 
     /**
      * @brief 将日志内容流的信息写入日志输出地（控制台或文件）
@@ -396,6 +409,7 @@ protected:
  * @brief 日志器
  */
 class Logger : public std::enable_shared_from_this<Logger> {
+friend class LoggerManager;
 public:
     typedef std::shared_ptr<Logger> ptr;
 
@@ -457,6 +471,8 @@ public:
      */
     void delAppender(LogAppender::ptr appender);
 
+    void clearAppenders();
+
     /**
      * @brief 获取日志级别
      * @return
@@ -475,20 +491,29 @@ public:
      */
     const std::string& getName() const { return m_name; }
 
+    void setFormatter(LoggerFormatter::ptr val);
+    void setFormatter(const std::string& val);
+
+    LoggerFormatter::ptr getFormatter();
+
+    std::string toYamlString();
+
 private:
     std::string  m_name;       // 日志名称
     LogLevel::Level m_level;  // 日志器级别
     std::list<LogAppender::ptr> m_appenders;  // 日志目标集合
     LoggerFormatter::ptr  m_formatter;        // 日志格式器
+    Logger::ptr m_root;
 };
 
 /**
  * @brief 输出到控制台的appender
  */
-class StdoutAppender: public LogAppender {
+class StdoutLogAppender: public LogAppender {
 public:
-    typedef std::shared_ptr<StdoutAppender> ptr;
+    typedef std::shared_ptr<StdoutLogAppender> ptr;
     void log(Logger::ptr logger, LogLevel::Level level, LogEvent::ptr event) override ;
+    std::string toYamlString() override;
 
 private:
 };
@@ -501,6 +526,7 @@ public:
     typedef std::shared_ptr<FileLogAppender> ptr;
     FileLogAppender(const std::string &filename);
     void log(Logger::ptr logger, LogLevel::Level level, LogEvent::ptr event) override;
+    std::string toYamlString() override;
 
     /**
      * @brief 重新打开日志文件
@@ -536,9 +562,11 @@ public:
     void init();
     Logger::ptr getRoot() const { return m_root; }
 
+    std::string toYamlString();
+
 private:
     std::map<std::string, Logger::ptr> m_loggers;   // 日志容器
-    Logger::ptr m_root;     // 主日志器
+    Logger::ptr m_root;     // 主日志器，默认设定的是StdoutAppender
 };
 
 // 日志器管理类单例模式

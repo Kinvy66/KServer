@@ -33,6 +33,39 @@ tests----测试代码
 
 ## 日志系统
 
+日志系统设计类图
+
+![log-uml](https://kinvy-images.oss-cn-beijing.aliyuncs.com/Images/diagram-6304072420879448753.png)
+
+使用
+```c++
+    sylar::Logger::ptr logger(new sylar::Logger);
+    logger->addAppender(sylar::LogAppender::ptr(new sylar::StdoutLogAppender));
+
+    sylar::FileLogAppender::ptr file_appender(new sylar::FileLogAppender("./log.txt"));
+
+    sylar::LoggerFormatter::ptr fmt(new sylar::LoggerFormatter("%d%T%m%n"));
+    file_appender->setFormatter(fmt);
+    file_appender->setLevel(sylar::LogLevel::ERROR);
+
+//    logger->addAppender(file_appender);
+//    sylar::LogEvent::ptr event(new sylar::LogEvent(logger,
+//                                                   sylar::LogLevel::DEBUG,
+//                                                   __FILE__, __LINE__,
+//                                                   0, sylar::GetThreadId(),
+//                                                   sylar::GetFiberId(), time(0)));
+//    event->getSS() << "Hello ";
+//    logger->log(sylar::LogLevel::DEBUG, event);
+
+    SYLAR_LOG_INFO(logger) << "test info";
+    SYLAR_LOG_ERROR(logger) << "test error";
+
+    SYLAR_LOG_FMT_ERROR(logger, "test fmt error %s", "aa");
+
+    auto  l = sylar::LoggerMgr::GetInstance()->getLogger("xx");
+    SYLAR_LOG_INFO(l) << "xxx";
+```
+
 ### Log4J
 
 ```
@@ -43,9 +76,50 @@ Logger(定义日志类别)
 Appender(日志输出地方)
 
 ```
+Logger 默认构造函数生成的logger
+```c++
+name: root
+level: DEBUG
+format: %d{%Y-%m-%d %H:%M:%S}%T%t%T%F%T[%p]%T[%c]%T%f:%l%T%m%n
+```
+
 
 
 ## 配置系统
+
+![config-uml](https://kinvy-images.oss-cn-beijing.aliyuncs.com/Images/diagram-17344954375024489049.png)
+
+使用的第三方库
+- [yaml-cpp](https://github.com/jbeder/yaml-cpp)
+- [boost](https://www.boost.org/)
+
+```c++
+class ConfigVarBase {
+    // 配置属性的基本类，抽象类
+    // 子类需要实现字符串和属性值之间的转换
+};
+
+template<typename F, typename T>
+class LexicalCast { 
+    // 用于转换的函数对象
+    // 只定义了调用操作符重载
+};
+
+template<typename T, typename FromStr = LexicalCast<std::string, T>,
+        typename ToStr = LexicalCast<T, std::string> >
+class ConfigVar : public ConfigVarBase {
+    // 具体的配置属性
+    // 调用可函数对象 FromStr/ToStr 实现类型T和string之间的转换
+    // 不同类型的转换需要偏特化LexicalCast
+};
+
+class Config { 
+    // 配置管理类 
+};
+
+```
+
+
 
 配置系统的原则，约定优于配置：
 
@@ -78,12 +152,24 @@ logs:
     level: (debug,info,warn,fatal)
     formatter: '%d%T%p%T%t%m%n'
     appender:
-      - type: (StdoutAppender, FileLogAppender)
+      - type: (StdoutLogAppender, FileLogAppender)
         level: (debug,info,warn,fatal)
         file: /log/xxx.log
 ```
 
+```c++
+sylar::Logger g_logger = sylar::LoggerMgr::GetInstance()->getLogger(name);
+SYLAR_LOG_INFO(g_logger) << "xxxx log";
+```
 
+```c++
+static Logger::ptr g_log = SYLAR_LOG_NAME("system");
+// m_root, m_system-> m_root 当 logger 的appenders为空， 使用 root 写logger
+```
+
+```c++
+
+```
 
 
 

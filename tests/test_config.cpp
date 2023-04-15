@@ -14,7 +14,7 @@ sylar::ConfigVar<int>::ptr  g_int_value_config =
         sylar::Config::Lookup("system.port", (int)8080, "system port");
 
 sylar::ConfigVar<float>::ptr  g_int_valuex_config =
-        sylar::Config::Lookup("system.port", (float)8080, "system port");
+        sylar::Config::Lookup("system.portx", (float)8080, "system port");
 
 sylar::ConfigVar<float>::ptr  g_float_value_config =
         sylar::Config::Lookup("system.value", (float)10.2f, "system value");
@@ -202,7 +202,7 @@ void test_class() {
     SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "before:  " << g_person_vec_map->toString();
 
 
-    YAML::Node root = YAML::LoadFile("./conf/log.yml");
+    YAML::Node root = YAML::LoadFile("./conf/test.yml");
     sylar::Config::LoadFromYaml(root);
 
     SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "after: " << g_person->getValue().toString()
@@ -213,12 +213,26 @@ void test_class() {
 
     XX_PM(g_person_map, "class.map after");
 
+}
 
+void test_log() {
+    static sylar::Logger::ptr system_log = SYLAR_LOG_NAME("system");
+    SYLAR_LOG_INFO(system_log) << "hello system" << std::endl;
+    std::cout <<  sylar::LoggerMgr::GetInstance()->toYamlString() << std::endl;
+    YAML::Node root = YAML::LoadFile("./conf/log.yml");
+    sylar::Config::LoadFromYaml(root);
+    std::cout << "===================" << std::endl;
+    std::cout <<  sylar::LoggerMgr::GetInstance()->toYamlString() << std::endl;
+    std::cout << "===================" << std::endl;
+    SYLAR_LOG_INFO(system_log) << "hello system" << std::endl;
 
 }
 
+
 int main(int argc, char** argv) {
     // test_yaml();
-    test_class();
+    // test_config_simple();
+    // test_class();
+    test_log();
     return 0;
 }

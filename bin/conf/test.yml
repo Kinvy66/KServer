@@ -1,0 +1,30 @@
+logs:
+  - name: root
+    level: info
+    formatter: "%d%T%m%n"
+    appender:
+      - typed: FileLogAppender
+        path: log.txt
+      - typed: StdoutAppender
+  - name: system
+    level: debug
+    formatter: "%d%T%m%n"
+    appender:
+      - typed: FileLogAppender
+        path: log.txt
+      - typed: StdoutAppender
+
+class:
+  person:
+    name: k1
+    age: 33
+    sex: true
+  map:
+    m01:
+      name: m1
+      age: 12
+      sex: false
+    m02:
+      name: m2
+      age: 21
+      sex: true

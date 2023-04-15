@@ -8,10 +8,11 @@
 #include <iostream>
 #include "sylar/log.h"
 #include "sylar/util.h"
+#include <yaml-cpp/yaml.h>
 
 void test01() {
     sylar::Logger::ptr logger(new sylar::Logger);
-    logger->addAppender(sylar::LogAppender::ptr(new sylar::StdoutAppender));
+    logger->addAppender(sylar::LogAppender::ptr(new sylar::StdoutLogAppender));
     sylar::LogEvent::ptr event(new sylar::LogEvent(logger,
                                                    sylar::LogLevel::INFO,
                                                    __FILE__, __LINE__,
@@ -23,7 +24,7 @@ void test01() {
 
 void test02() {
     sylar::Logger::ptr logger(new sylar::Logger);
-    logger->addAppender(sylar::LogAppender::ptr(new sylar::StdoutAppender));
+    logger->addAppender(sylar::LogAppender::ptr(new sylar::StdoutLogAppender));
 
     sylar::FileLogAppender::ptr file_appender(new sylar::FileLogAppender("./log.txt"));
 

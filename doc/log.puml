@@ -2,7 +2,10 @@
 
 title 日志模块类图
 
-class LoggerManager
+class LoggerManager {
++m_loggers
++m_roo
+}
 class Logger {
     -LogFormatter m_formatter
     -Logger m_root

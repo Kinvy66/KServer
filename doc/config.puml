@@ -1,20 +1,45 @@
 @startuml
 title 配置模块
 
+class Config {
++ConfigVarMap s_datas
+}
+
+class ConfigVarBase {
+    + virtual std::string  toString() = 0;
+    + virtual bool fromString(const std::string& val) = 0;
+
+    # std::string m_name;
+    # std::string m_description;
+}
+
+class LexicalCast <typename F, \n typename T>{
++T operator()(const F& v)
+}
+
+class ConfigVar <typename T ,\n typename FromStr, \n typename ToStr >{
++std::string toString() override
++bool fromString(const std::string& val) override
+}
 
 
-class MyTemplateClass
 
-class MyTemplateClass<T>
+Config "1" *-- "m" ConfigVar
 
-'MyTemplateClass <|-- MyTemplateClass<T>
-'
-'class MyTemplateClassInt {
-'    // implementation for int type
-'}
-'
-'MyTemplateClassInt <|-- MyTemplateClass<int>
+ConfigVar ..> LexicalCast
+ConfigVar  -|> ConfigVarBase
 
 
+note left of ConfigVar::"toString()"
+  调用ToStr函数对象实现
+end note
+
+note left of ConfigVar::"fromString(const std::string& val)"
+  调用FromStr函数对象实现
+end note
+
+note left of ConfigVar::"T"
+  调用FromStr函
+end note
 
 @enduml
