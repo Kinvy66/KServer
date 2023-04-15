@@ -119,6 +119,8 @@ class Config {
 
 ```
 
+Config 通过静态方法返回静态成员，能够确保在其他成员初始化之前存在
+
 
 
 配置系统的原则，约定优于配置：
@@ -167,9 +169,33 @@ static Logger::ptr g_log = SYLAR_LOG_NAME("system");
 // m_root, m_system-> m_root 当 logger 的appenders为空， 使用 root 写logger
 ```
 
-```c++
+### 整合
+在执行main之前添加一个日志配置更改回调函数，
+从yaml 文件读取日志配置后，根据yaml的配置修改默认的日志配置
+
+yaml日志配置
+```yaml
+logs:
+  - name: root
+    level: INFO
+    formatter: "%d%T%m%n"
+    appenders:
+      - type: FileLogAppender
+        file: root.txt
+      - type: StdoutLogAppender
+  - name: system
+    level: DEBUG
+    formatter: "%d%T%m%n"
+    appenders:
+      - type: FileLogAppender
+        file: system.txt
+        formatter: "%d%T[%p]%T%m%n"
+      - type: StdoutLogAppender
 
 ```
+对于配置文件中没有formatter属性的appender则使用log的formatter
+例如， root和system的StdoutLogAppender均没有formatter，他们使用各自父节点的formatter
+
 
 
 

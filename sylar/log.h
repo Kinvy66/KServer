@@ -357,6 +357,7 @@ private:
  * @brief 日志输出目标
  */
 class LogAppender {
+friend class Logger;
 public:
     typedef std::shared_ptr<LogAppender> ptr;
 
@@ -379,7 +380,7 @@ public:
      * @brief 设置日志格式器
      * @param val
      */
-    void setFormatter(LoggerFormatter::ptr val) { m_formatter = val; }
+    void setFormatter(LoggerFormatter::ptr val);
 
     /**
      * @brief 获取日志格式器
@@ -401,6 +402,7 @@ public:
 
 protected:
     LogLevel::Level m_level = LogLevel::DEBUG;   // 日志级别
+    bool m_hasFormatter = false;
     LoggerFormatter::ptr m_formatter;           // 日志格式器
 };
 

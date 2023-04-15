@@ -1,26 +1,31 @@
 cmake_minimum_required(VERSION 3.16)
 project(sylar)
 
+include (cmake/utils.cmake)
+
 set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -rdynamic -O0 -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function")
+set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -rdynamic -O0 -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined")
 
 include_directories(.)
+
 
 set(LIB_SRC
         sylar/log.cpp
         sylar/util.cpp
         sylar/config.cpp)
-
 add_library(sylar SHARED ${LIB_SRC})
+force_redefine_file_macro_for_sources(sylar)
 #add_library(sylar_static STATIC ${LIB_SRC})
 #SET_TARGET_PROPERTIES(sylar_static PROPERTIES OUTPUT_NAME "sylar")
 
 add_executable(test tests/test.cpp )
 add_dependencies(test sylar)
+force_redefine_file_macro_for_sources(test)
 target_link_libraries(test sylar yaml-cpp)
 
 add_executable(test_config tests/test_config.cpp)
 add_dependencies(test_config sylar)
+force_redefine_file_macro_for_sources(test_config)
 target_link_libraries(test_config sylar yaml-cpp)
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
