@@ -1,0 +1,8 @@
+logs:
+  - name: root
+    level: INFO
+    formatter: "%d%T[%c]%m%n"
+    appenders:
+      - type: FileLogAppender
+        file: mutex.txt
+      - type: StdoutLogAppender
