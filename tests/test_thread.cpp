@@ -29,9 +29,7 @@ void fun2() {
 }
 
 void test() {
-    // sylar::Logger::ptr g_logger = SYLAR_LOG_ROOT();
-    // sylar::Logger::ptr g_logger = SYLAR_LOG_NAME("root");
-    sylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+    sylar::Logger::ptr g_logger = SYLAR_LOG_ROOT();
     SYLAR_LOG_INFO(g_logger) << "thread test begin";
     YAML::Node root = YAML::LoadFile("./conf/log2.yml");
     sylar::Config::LoadFromYaml(root);

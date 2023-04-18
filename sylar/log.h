@@ -26,7 +26,7 @@
  * @brief 使用流式方式将日志级别level的日志写入到logger
  */
 #define SYLAR_LOG_LEVEL(logger, level) \
-    if(logger->getLevel() < level)     \
+    if(logger->getLevel() <= level)     \
         sylar::LogEventWrap(sylar::LogEvent::ptr(new sylar::LogEvent(logger, level, \
                         __FILE__, __LINE__, 0, sylar::GetThreadId(), \
                 sylar::GetFiberId(), time(0)))).getSS()
