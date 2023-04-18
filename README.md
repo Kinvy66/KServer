@@ -201,11 +201,17 @@ logs:
 
 ## 协程库封装
 
+### 线程
 Thread  Mutex
 
 互斥量 mutex
 信号量 semaphore
 
+Spinlock? CASLock?
+日志模块整合线程，写日志线程安全
+
+写文件，周期性， reopen
+- [] 不同锁的区别以及底层原理
 
 
 ## socket函数库
