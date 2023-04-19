@@ -213,6 +213,31 @@ Spinlock? CASLock?
 写文件，周期性， reopen
 - [] 不同锁的区别以及底层原理
 
+死锁问题,怎么防止死锁
+```c++
+void Logger::setFormatter(LoggerFormatter::ptr val) {
+    MutexType::Lock lock(m_mutex);
+    m_formatter = val;
+    for (auto& i : m_appenders) {
+        MutexType::Lock ll(i->m_mutex);
+        if(!i->m_hasFormatter) {
+            i->m_formatter = m_formatter;
+        }
+    }
+}
+
+void Logger::setFormatter(const std::string &val) {
+    MutexType::Lock lock(m_mutex);
+    sylar::LoggerFormatter::ptr  new_val(new sylar::LoggerFormatter(val));
+    if (new_val->isError()) {
+        std::cout << "Logger setFormatter name=" << m_name
+                << " value=" << val << " invalid formatter";
+        return;
+    }
+    setFormatter(new_val);
+}
+```
+
 
 ## socket函数库
 

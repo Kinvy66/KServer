@@ -28,7 +28,7 @@ public:
     void notify();
 
 // TODO 这些删除方法定义成public?
-private:
+public:
     Semaphore(const Semaphore&) = delete;
     Semaphore(const Semaphore&&) = delete;
     Semaphore& operator=(const Semaphore&) = delete;
@@ -215,7 +215,7 @@ public:
 
 };
 
-// TODO Spinlock?
+// 自旋锁
 class Spinlock {
 public:
     typedef ScopedLockImpl<Spinlock> Lock;
@@ -278,7 +278,7 @@ public:
     static void SetName(const std::string& name);
 
 // TODO 这些删除方法定义成public?
-private:
+public:
     Thread(const Thread&) = delete;
     Thread(const Thread&&) = delete;
     Thread& operator=(const Thread&) = delete;
