@@ -13,7 +13,8 @@ set(LIB_SRC
         sylar/log.cpp
         sylar/util.cpp
         sylar/config.cpp
-        sylar/thread.cpp)
+        sylar/thread.cpp
+        sylar/fiber.cpp)
 add_library(sylar SHARED ${LIB_SRC})
 force_redefine_file_macro_for_sources(sylar)
 #add_library(sylar_static STATIC ${LIB_SRC})
@@ -38,6 +39,11 @@ add_executable(test_thread tests/test_thread.cpp)
 add_dependencies(test_thread sylar)
 force_redefine_file_macro_for_sources(test_thread)
 target_link_libraries(test_thread ${LIB_LIB})
+
+add_executable(test_util tests/test_util.cpp)
+add_dependencies(test_util sylar)
+force_redefine_file_macro_for_sources(test_util)
+target_link_libraries(test_util ${LIB_LIB})
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 

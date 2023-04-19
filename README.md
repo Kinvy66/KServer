@@ -238,6 +238,19 @@ void Logger::setFormatter(const std::string &val) {
 }
 ```
 
+### 协程库封装
+定义协程接口
+ucontext_t
+macro
+
+```c++
+Thread-> main_fiber <--------> sub_fiber
+             |
+             |
+         sub_fiber    
+```
+
+
 
 ## socket函数库
 
