@@ -250,6 +250,9 @@ Thread-> main_fiber <--------> sub_fiber
          sub_fiber    
 ```
 
+每个线程有一个主协程，主协程可以创建协程并调度协程
+子协程只能回到主协程
+
 
 
 ## socket函数库
