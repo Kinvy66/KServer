@@ -13,6 +13,7 @@ set(LIB_SRC
         sylar/config.cpp
         sylar/fiber.cpp
         sylar/log.cpp
+        sylar/scheduler.cpp
         sylar/thread.cpp
         sylar/util.cpp)
 
@@ -50,6 +51,11 @@ add_executable(test_fiber tests/test_fiber.cpp)
 add_dependencies(test_fiber sylar)
 force_redefine_file_macro_for_sources(test_fiber)
 target_link_libraries(test_fiber ${LIB_LIB})
+
+add_executable(test_scheduler tests/test_scheduler.cpp)
+add_dependencies(test_scheduler sylar)
+force_redefine_file_macro_for_sources(test_scheduler)
+target_link_libraries(test_scheduler ${LIB_LIB})
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
