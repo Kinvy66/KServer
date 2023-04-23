@@ -9,7 +9,7 @@
 #define __SYLAR_MACRO_H
 
 #include <string>
-#include <assert.h>
+#include <cassert>
 #include "util.h"
 
 #define SYLAR_ASSERT(x) \

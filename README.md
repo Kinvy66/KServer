@@ -31,7 +31,7 @@ tests----测试代码
 
 
 
-## 日志系统
+## 1. 日志系统
 
 日志系统设计类图
 
@@ -85,7 +85,7 @@ format: %d{%Y-%m-%d %H:%M:%S}%T%t%T%F%T[%p]%T[%c]%T%f:%l%T%m%n
 
 
 
-## 配置系统
+## 2. 配置系统
 
 ![config-uml](https://kinvy-images.oss-cn-beijing.aliyuncs.com/Images/diagram-17344954375024489049.png)
 
@@ -146,7 +146,7 @@ LexicalCast;
 当一个配置项发生修改的时候，可以反向通知对应的代码，回调
 该功实现使用了观察者模式？
 
-### 日志系统整合配置系统
+### 2.1 日志系统整合配置系统
 
 ```yaml
 logs:
@@ -169,7 +169,7 @@ static Logger::ptr g_log = SYLAR_LOG_NAME("system");
 // m_root, m_system-> m_root 当 logger 的appenders为空， 使用 root 写logger
 ```
 
-### 整合
+### 2.2 整合
 在执行main之前添加一个日志配置更改回调函数，
 从yaml 文件读取日志配置后，根据yaml的配置修改默认的日志配置
 
@@ -199,21 +199,105 @@ logs:
 
 
 
-## 协程库封装
+## 3. 协程库封装
 
-### 线程
-Thread  Mutex
 
-互斥量 mutex
-信号量 semaphore
 
-Spinlock? CASLock?
+### 3.1 线程
+线程使用C++11的线程，互斥量使用的是pthread
+Thread 类
+
+
+#### 线程同步
+线程同步的使用使用了区域锁(Scoped locking) 的方法，
+它是RAII(Resource Acquisition Is Initialization)的一种具体应用
+对象在构造函数初始化，在析构函数释放，
+对于线程同步就是在对象构建就是上锁，对象析构就是解锁
+
+以Mutex为例
+```c++
+template<typename T>
+struct ScopedLockImpl {
+public:
+    ScopedLockImpl(T& mutex)
+        : m_mutex(mutex) {
+        m_mutex.lock();
+        m_locked = true;
+    }
+
+    ~ScopedLockImpl() {
+        unlock();
+    }
+
+    void lock() {
+        if (!m_locked) {
+            m_mutex.lock();
+            m_locked = true;
+        }
+    }
+
+    void unlock() {
+        if (m_locked) {
+            m_mutex.unlock();
+            m_locked = false;
+        }
+    }
+
+private:
+    T& m_mutex;
+    bool m_locked;
+};
+
+class Mutex {
+public:
+    typedef ScopedLockImpl<Mutex> Lock;
+
+    Mutex() {
+        pthread_mutex_init(&m_mutex, nullptr);
+    }
+
+    ~Mutex() {
+        pthread_mutex_destroy(&m_mutex);
+    }
+
+    void lock() {
+        pthread_mutex_lock(&m_mutex);
+    }
+
+    void unlock() {
+        pthread_mutex_unlock(&m_mutex);
+    }
+
+private:
+    pthread_mutex_t m_mutex;
+};
+```
+
+Mutex的使用
+```c++
+Mutex mutex;        // 定义互斥锁
+
+void test_mutex() {
+    Mutex::Lock lock(mutex);  // 创建Lock对象，初始化mutex, 加锁
+    // 临界区
+}   // 离开作用域自动调用析构，在析构中解锁
+
+int main(int argc, char** argv) {
+    test_mutex();
+    return 0;
+}
+
+```
+
+RWMutex(读写锁)，Spinlock(自旋锁)，CASLock(乐观锁)应用了同样的方式
+
+
 日志模块整合线程，写日志线程安全
 
 写文件，周期性， reopen
-- [] 不同锁的区别以及底层原理
+- [ ] 不同锁的区别以及底层原理
 
-死锁问题,怎么防止死锁
+- [ ] 死锁问题,怎么防止死锁?
 ```c++
 void Logger::setFormatter(LoggerFormatter::ptr val) {
     MutexType::Lock lock(m_mutex);
@@ -238,10 +322,9 @@ void Logger::setFormatter(const std::string &val) {
 }
 ```
 
-### 协程库封装
+### 3.2 协程库封装
 定义协程接口
-ucontext_t
-macro
+ucontext_t, macro
 
 ```c++
 Thread-> main_fiber <--------> sub_fiber
@@ -253,7 +336,7 @@ Thread-> main_fiber <--------> sub_fiber
 每个线程有一个主协程，主协程可以创建协程并调度协程
 子协程只能回到主协程
 
-### 协程调度模块 scheduler
+### 3.3 协程调度模块 scheduler
 
 ```c++
         1 - N       1 - M
