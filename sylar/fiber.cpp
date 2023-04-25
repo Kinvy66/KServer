@@ -11,9 +11,10 @@ static Logger::ptr g_logger = SYLAR_LOG_NAME("system");
 
 static std::atomic<uint64_t> s_fiber_id{0};
 static std::atomic<uint64_t> s_fiber_count{0};
-// TODO thread_local?
+// 当前运行的协程
 static thread_local Fiber* t_fiber = nullptr;
-static thread_local Fiber::ptr t_threadFiber = nullptr;    // main 协程
+// 主协程
+static thread_local Fiber::ptr t_threadFiber = nullptr;
 
 //  配置协程栈初始大小默认为1M
 static ConfigVar<uint32_t>::ptr g_fiber_stack_size =
@@ -198,7 +199,7 @@ void Fiber::MainFunc() {
     } catch (...) {
         SYLAR_LOG_ERROR(g_logger) << "Fiber Except";
     }
-    // TODO 修改 uc_link实现？
+
     auto raw_ptr = cur.get();
     cur.reset();
     raw_ptr->swapOut();
@@ -222,7 +223,7 @@ void Fiber::CallerMainFunc() {
     } catch (...) {
         SYLAR_LOG_ERROR(g_logger) << "Fiber Except";
     }
-    // TODO 修改 uc_link实现？
+
     auto raw_ptr = cur.get();
     cur.reset();
     raw_ptr->back();

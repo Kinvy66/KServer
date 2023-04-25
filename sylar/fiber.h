@@ -54,6 +54,12 @@ public:
     //  设置当前协程
     static void SetThis(Fiber* f);
     // 返回当前协程
+    /**
+     * @brief 获取当前协程
+     * @details
+     *      如果当前线程中没有协程，会自动创建一个主协程
+     *
+     */
     static Fiber::ptr GetThis();
     // 协程切换到后台，并且设置为Read状态
     static void YieldToRead();
