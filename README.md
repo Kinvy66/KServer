@@ -369,11 +369,34 @@ run()
 
 ```
 
+```c++
+IOManager(epoll) --> Scheduler
+    |
+    |
+    V
+    idle(epoll_wait)
+    
+    信号量
+PutMessage(msg, ) + 信号量1, sigle()
+message_queue
+    |
+    |----- Thread
+    |----- Thread
+        wait()-信号量1, RecvMeassage(msg, )
+异步IO, 等待数据返回。 
+```
+
+```c++
+Timer -> addTimer() --> cancel()
+获取当前的定时器触发离现在的时间差
+返回当前需要触发的定时器
+```
+
 ## socket函数库
 
 
 
-## htttp 协议开发
+## http 协议开发
 
 
 

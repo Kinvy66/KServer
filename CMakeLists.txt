@@ -16,6 +16,7 @@ set(LIB_SRC
         sylar/log.cpp
         sylar/scheduler.cpp
         sylar/thread.cpp
+        sylar/timer.cpp
         sylar/util.cpp)
 
 add_library(sylar SHARED ${LIB_SRC})

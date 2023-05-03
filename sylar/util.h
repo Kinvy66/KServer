@@ -16,6 +16,7 @@
 #include <cstdint>
 #include <vector>
 #include <string>
+#include <sys/time.h>
 
 namespace sylar {
 
@@ -25,6 +26,10 @@ uint32_t GetFiberId();
 // 获取函数调用栈信息
 void Backtrace(std::vector<std::string>& bt, int size = 64, int skip = 1);
 std::string BacktraceToString(int size = 64, int skip = 2,  const std::string& prefix = "");
+
+// 时间 ms
+uint64_t GetCurrentMS();
+uint64_t GetCurrentUS();
 
 }
 
