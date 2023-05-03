@@ -12,6 +12,7 @@ include_directories(.)
 set(LIB_SRC
         sylar/config.cpp
         sylar/fiber.cpp
+        sylar/iomanager.cpp
         sylar/log.cpp
         sylar/scheduler.cpp
         sylar/thread.cpp
@@ -56,6 +57,11 @@ add_executable(test_scheduler tests/test_scheduler.cpp)
 add_dependencies(test_scheduler sylar)
 force_redefine_file_macro_for_sources(test_scheduler)
 target_link_libraries(test_scheduler ${LIB_LIB})
+
+add_executable(test_iomanager tests/test_iomanager.cpp)
+add_dependencies(test_iomanager sylar)
+force_redefine_file_macro_for_sources(test_iomanager)
+target_link_libraries(test_iomanager ${LIB_LIB})
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 

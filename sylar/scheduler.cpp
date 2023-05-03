@@ -8,11 +8,11 @@ static sylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
 static thread_local Scheduler* t_scheduler = nullptr;
 static thread_local Fiber* t_fiber = nullptr;
 
-Scheduler::Scheduler(size_t threads, bool user_caller, const std::string &name)
+Scheduler::Scheduler(size_t threads, bool use_caller, const std::string &name)
     :m_name(name){
     SYLAR_ASSERT(threads > 0);
 
-    if (user_caller) {
+    if (use_caller) {
         sylar::Fiber::GetThis();   // 没有协程，初始化一个主协程
         --threads;
 
@@ -34,8 +34,9 @@ Scheduler::Scheduler(size_t threads, bool user_caller, const std::string &name)
 
 Scheduler::~Scheduler() {
     SYLAR_ASSERT(m_stopping);
-    if (GetThis() == this) {}
-    t_scheduler = nullptr;
+    if (GetThis() == this) {
+        t_scheduler = nullptr;
+    }
 }
 
 Scheduler *Scheduler::GetThis() {
@@ -47,7 +48,7 @@ Fiber *Scheduler::GetMainFiber() {
 }
 
 void Scheduler::start() {
-    MutexType::Lock  lock(m_mutex);
+    MutexType::Lock lock(m_mutex);
     if (!m_stopping) {
         return;
     }
@@ -115,7 +116,7 @@ void Scheduler::stop() {
 
     std::vector<Thread::ptr> thrs;
     {
-        MutexType::Lock  lock(m_mutex);
+        MutexType::Lock lock(m_mutex);
         thrs.swap(m_threads);
     }
 
@@ -142,12 +143,12 @@ void Scheduler::run() {
     Fiber::ptr cb_fiber;
 
     FiberAndThread ft;
-    while (!stopping()) {
+    while (true) {
         ft.reset();
         bool tickle_me = false;
         bool is_active = false;
         {
-            MutexType::Lock  lock(m_mutex);
+            MutexType::Lock lock(m_mutex);
             auto it = m_fibers.begin();
             while (it != m_fibers.end()) {
                 if (it->thread != -1 && it->thread != sylar::GetThreadId()) {

@@ -24,7 +24,13 @@ public:
     typedef std::shared_ptr<Scheduler> ptr;
     typedef Mutex MutexType;
 
-    Scheduler(size_t threads = 1, bool user_caller = true, const std::string& name = "");
+    /**
+     * @brief 创建调度器
+     * @param threads 线程数
+     * @param use_caller 是否将当前线程也作为调度线程
+     * @param name 名称
+     */
+    Scheduler(size_t threads = 1, bool use_caller = true, const std::string& name = "");
     virtual ~Scheduler();
 
     const std::string& getName() const { return  m_name; }
@@ -68,6 +74,8 @@ protected:
     virtual void idle();
 
     void setThis();
+
+    bool hasIdleThreads() { return m_idleThreadCount > 0; }
 private:
     template<class FiberOrCb>
     bool scheduleNoLock(FiberOrCb fc, int thread) {
@@ -80,6 +88,9 @@ private:
     }
 
 private:
+    /**
+     * @brief 调度任务，协程/函数二选一，可指定在哪个线程上调度
+     */
     struct FiberAndThread {
         Fiber::ptr fiber;
         std::function<void()> cb;
@@ -125,9 +136,13 @@ private:
 
 
 protected:
+    /// 线程池的线程ID数组
     std::vector<int> m_threadIds;
+    /// 工作线程数量，不包含use_caller的主线程
     size_t m_threadCount = 0;
+    /// 活跃线程数
     std::atomic<size_t> m_activeThreadCount = {0};
+    /// idle线程数
     std::atomic<size_t> m_idleThreadCount = {0};
     bool m_stopping = true;
     bool m_autoStop = false;

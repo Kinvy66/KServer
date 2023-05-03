@@ -9,11 +9,13 @@ namespace sylar {
 
 static Logger::ptr g_logger = SYLAR_LOG_NAME("system");
 
+/// 全局静态变量，用于生成协程id
 static std::atomic<uint64_t> s_fiber_id{0};
+/// 全局静态变量，用于统计当前的协程数
 static std::atomic<uint64_t> s_fiber_count{0};
-// 当前运行的协程
+// 线程局部变量, 当前线程运行的协程
 static thread_local Fiber* t_fiber = nullptr;
-// 主协程
+/// 线程局部变量，当前线程的主协程，切换到这个协程，就相当于切换到了主协程中运行，智能指针形式
 static thread_local Fiber::ptr t_threadFiber = nullptr;
 
 //  配置协程栈初始大小默认为1M
@@ -137,7 +139,7 @@ void Fiber::back() {
 void Fiber::swapIn() {
     SetThis(this);
     SYLAR_ASSERT(m_state != EXEC);
-
+    m_state = EXEC;
     if (swapcontext(&Scheduler::GetMainFiber()->m_ctx, &m_ctx)) {
         SYLAR_ASSERT2(false, "swapcontext");
     }
@@ -197,7 +199,11 @@ void Fiber::MainFunc() {
             << std::endl
             << sylar::BacktraceToString();
     } catch (...) {
-        SYLAR_LOG_ERROR(g_logger) << "Fiber Except";
+        cur->m_state = EXCEPT;
+        SYLAR_LOG_ERROR(g_logger) << "Fiber Except: "
+                                  << " fiber_id=" << cur->getId()
+                                  << std::endl
+                                  << sylar::BacktraceToString();
     }
 
     auto raw_ptr = cur.get();
@@ -221,7 +227,11 @@ void Fiber::CallerMainFunc() {
                                   << std::endl
                                   << sylar::BacktraceToString();
     } catch (...) {
-        SYLAR_LOG_ERROR(g_logger) << "Fiber Except";
+        cur->m_state = EXCEPT;
+        SYLAR_LOG_ERROR(g_logger) << "Fiber Except: "
+                                  << " fiber_id=" << cur->getId()
+                                  << std::endl
+                                  << sylar::BacktraceToString();
     }
 
     auto raw_ptr = cur.get();
