@@ -11,7 +11,9 @@ include_directories(.)
 
 set(LIB_SRC
         sylar/config.cpp
+        sylar/fd_manager.cpp
         sylar/fiber.cpp
+        sylar/hook.cpp
         sylar/iomanager.cpp
         sylar/log.cpp
         sylar/scheduler.cpp
@@ -26,6 +28,7 @@ force_redefine_file_macro_for_sources(sylar)
 
 set(LIB_LIB
         sylar
+        dl
         yaml-cpp
         pthread)
 
@@ -63,6 +66,11 @@ add_executable(test_iomanager tests/test_iomanager.cpp)
 add_dependencies(test_iomanager sylar)
 force_redefine_file_macro_for_sources(test_iomanager)
 target_link_libraries(test_iomanager ${LIB_LIB})
+
+add_executable(test_hook tests/test_hook.cpp)
+add_dependencies(test_hook sylar)
+force_redefine_file_macro_for_sources(test_hook)
+target_link_libraries(test_hook ${LIB_LIB})
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 

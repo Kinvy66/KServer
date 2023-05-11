@@ -37,4 +37,4 @@ CMakeFiles
 bin/test*
 bin/*.txt
 lib
-
+doc/Others.md

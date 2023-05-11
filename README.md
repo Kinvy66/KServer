@@ -392,6 +392,24 @@ Timer -> addTimer() --> cancel()
 返回当前需要触发的定时器
 ```
 
+总结
+```c++
+            [Fiber]               [Timer]
+               ^ N                  ^
+               |                    |
+               | 1                  |
+            [Thread]           [TimerManager]
+               ^ M                  ^
+               |                    |
+               | 1                  |
+            [Scheduler] <---- [IOManager(epoll)]   
+```
+
+## HOOK
+sleep,
+usleep
+
+
 ## socket函数库
 
 

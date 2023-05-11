@@ -16,22 +16,18 @@
 #include <cstdint>
 #include <atomic>
 
+#include "noncopyable.h"
+
 namespace sylar {
 
 // 信号量
-class Semaphore {
+class Semaphore : private Noncopyable{
 public:
     Semaphore(uint32_t count = 0);
     ~Semaphore();
 
     void wait();
     void notify();
-
-// TODO 这些删除方法定义成public?
-public:
-    Semaphore(const Semaphore&) = delete;
-    Semaphore(const Semaphore&&) = delete;
-    Semaphore& operator=(const Semaphore&) = delete;
 
 private:
     sem_t m_semaphore;
@@ -71,7 +67,7 @@ private:
 };
 
 // 互斥量
-class Mutex {
+class Mutex : private Noncopyable{
 public:
     typedef ScopedLockImpl<Mutex> Lock;
 
@@ -95,7 +91,7 @@ private:
     pthread_mutex_t m_mutex;
 };
 
-class NullMutex {
+class NullMutex : private Noncopyable{
 public:
     typedef ScopedLockImpl<NullMutex> Lock;
     NullMutex() { }
@@ -172,7 +168,7 @@ private:
 };
 
 // 读写锁
-class RWMutex {
+class RWMutex : private Noncopyable{
 public:
     typedef ReadScopedLockImpl<RWMutex> ReadLock;
     typedef WriteScopedLockImpl<RWMutex> WriteLock;
@@ -201,7 +197,7 @@ private:
     pthread_rwlock_t m_lock;
 };
 
-class NullRWMutex {
+class NullRWMutex : private Noncopyable{
 public:
     typedef ReadScopedLockImpl<NullRWMutex> ReadLock;
     typedef WriteScopedLockImpl<NullRWMutex> WriteLock;
@@ -216,7 +212,7 @@ public:
 };
 
 // 自旋锁
-class Spinlock {
+class Spinlock : private Noncopyable{
 public:
     typedef ScopedLockImpl<Spinlock> Lock;
     Spinlock() {
@@ -239,7 +235,7 @@ private:
 
 };
 
-class CASLock {
+class CASLock : private Noncopyable{
 public:
     typedef ScopedLockImpl<CASLock> Lock;
     CASLock() {
