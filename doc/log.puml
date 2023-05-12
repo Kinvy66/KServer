@@ -4,7 +4,7 @@ title 日志模块类图
 
 class LoggerManager {
 +m_loggers
-+m_roo
++m_root
 }
 class Logger {
     -LogFormatter m_formatter

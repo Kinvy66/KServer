@@ -5,8 +5,9 @@
 
 namespace sylar {
 
-// TODO: thread_local?
+// 当前线程
 static thread_local Thread* t_thread = nullptr;
+// 当前线程的名称
 static thread_local std::string t_thread_name = "UNKNOW";
 
 static sylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");

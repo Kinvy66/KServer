@@ -20,9 +20,12 @@ friend class Scheduler;
 public:
     typedef std::shared_ptr<Fiber> ptr;
 
+    /**
+     * @brief 协程状态
+     */
     enum State {
         INIT,       // 协程刚创建，没有执行任何代码
-        HOLD,       //
+        HOLD,       // 挂起状态，不会被调度执行
         EXEC,       // 执行中
         TERM,       // 终止
         READY,      // 就绪，协程执行了部分代码
@@ -51,22 +54,42 @@ public:
      */
     ~Fiber();
 
-    // 重置协程函数， 并重置状态
-    // INIT TERM
+    /**
+     * @brief  重置协程函数， 并重置状态为 INIT
+     * @param cb 协程任务
+     * @details 协程 TERM EXCEPT INIT 状态才能被重置
+     */
     void reset(std::function<void()> cb);
-    // 切换到协程执行
+
+    /**
+     * @brief 切换到协程执行 EXEC
+     */
     void swapIn();
-    // 切换到后台执行
+
+    /**
+     * @brief 切换协程到后台
+     * @details 由Yield调用，在状态在Yield中设置
+     */
     void swapOut();
 
     void call();
     void back();
 
+    /**
+     * @brief 获取协程id
+     */
     uint64_t getId() const { return m_id; }
+
+    /**
+     * @brief 获取协程状态
+     */
     State getState() const { return m_state; }
 
 public:
-    //  设置当前协程
+    /**
+     * @brief 更新当前运行协程变量的值
+     * @details 当前执行协程的指针保存在线程静态变量t_fiber
+     */
     static void SetThis(Fiber* f);
 
     /**
@@ -78,11 +101,13 @@ public:
 
     /**
      * @brief 让出执行权，协程切换到后台，并且设置为Read状态
+     * @note Read 状态协程可以再此被调用
      */
     static void YieldToRead();
 
     /**
      * @brief 让出执行权，协程切换到后台，并且设置为Hold状态
+     * @note Hold状态的协程不会被调度，需要重新手动加入调度
      */
     static void YieldToHold();
 
@@ -91,8 +116,20 @@ public:
      */
     static uint64_t TotalFibers();
 
+    /**
+     * @brief 协程入口函数
+     */
     static void MainFunc();
+
+    /**
+     * @brief
+     */
     static void CallerMainFunc();
+
+    /**
+     * @brief 获取协程id
+     * @return
+     */
     static uint64_t  GetFiberId();
 
 private:
@@ -106,7 +143,7 @@ private:
     ucontext_t m_ctx;
     // 协程栈地址
     void * m_stack = nullptr;
-    // 协程入口函数
+    // 协程任务函数
     std::function<void()> m_cb;
 
 };

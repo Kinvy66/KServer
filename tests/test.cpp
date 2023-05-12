@@ -17,7 +17,7 @@ void test01() {
                                                    sylar::LogLevel::INFO,
                                                    __FILE__, __LINE__,
                                                    0, sylar::GetThreadId(),
-                                                   sylar::GetFiberId(), time(0)));
+                                                   sylar::GetFiberId(), time(0), "t1"));
     event->getSS() << "Hello";
     logger->log(sylar::LogLevel::DEBUG, event);
 }
