@@ -5,8 +5,9 @@
 
 namespace sylar {
 static sylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
-
+/// 当前线程的调度器，同一个调度器下的所有线程指同同一个调度器实例
 static thread_local Scheduler* t_scheduler = nullptr;
+/// 当前线程的调度协程，每个线程都独有一份，包括caller线程
 static thread_local Fiber* t_fiber = nullptr;
 
 Scheduler::Scheduler(size_t threads, bool use_caller, const std::string &name)

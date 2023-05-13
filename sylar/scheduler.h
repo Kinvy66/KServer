@@ -41,7 +41,7 @@ public:
     void start();
     void stop();
 
-    template<class FiberOrCb>
+    template<typename FiberOrCb>
     void schedule(FiberOrCb fc, int thread = -1) {
         bool nee_tickle = false;
         {
@@ -53,7 +53,7 @@ public:
         }
     }
 
-    template<class InputIterator>
+    template<typename InputIterator>
     void schedule(InputIterator begin, InputIterator end) {
         bool need_tickle = false;
         {
@@ -150,9 +150,6 @@ protected:
     int m_rootThread = 0;
 
 };
-
 }
-
-
 
 #endif //__SYLAR_SCHEDULER_H

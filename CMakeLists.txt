@@ -10,7 +10,9 @@ include_directories(.)
 
 
 set(LIB_SRC
+        sylar/address.cpp
         sylar/config.cpp
+        sylar/endian.cpp
         sylar/fd_manager.cpp
         sylar/fiber.cpp
         sylar/hook.cpp
