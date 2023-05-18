@@ -12,7 +12,6 @@ include_directories(.)
 set(LIB_SRC
         sylar/address.cpp
         sylar/config.cpp
-        sylar/endian.cpp
         sylar/fd_manager.cpp
         sylar/fiber.cpp
         sylar/hook.cpp
@@ -73,6 +72,11 @@ add_executable(test_hook tests/test_hook.cpp)
 add_dependencies(test_hook sylar)
 force_redefine_file_macro_for_sources(test_hook)
 target_link_libraries(test_hook ${LIB_LIB})
+
+add_executable(test_address tests/test_address.cpp)
+add_dependencies(test_address sylar)
+force_redefine_file_macro_for_sources(test_address)
+target_link_libraries(test_address ${LIB_LIB})
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 

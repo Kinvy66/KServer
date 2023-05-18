@@ -245,7 +245,7 @@ IPAddress::ptr IPAddress::Create(const char *address, uint32_t port) {
     if (error) {
         SYLAR_LOG_ERROR(g_logger) << "IPAddress::Creat(" << address
                 << ", " << port << ") error=" << error
-                << " error=" << error << " errstr=" << strerror(errno);
+                << " errno=" << errno << " errstr=" << strerror(errno);
         return nullptr;
     }
     try {
@@ -392,7 +392,7 @@ std::ostream &IPv6Address::insert(std::ostream &os) const {
         if (i) {
             os << ":" ;
         }
-        os << (int) byteswapOnLittleEndian(addr[i]) << std::dec;
+        os << std::hex << (int) byteswapOnLittleEndian(addr[i]) << std::dec;
     }
     if (!used_zeros && addr[7] == 0) {
         os << "::";
