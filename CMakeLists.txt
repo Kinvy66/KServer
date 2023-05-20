@@ -18,6 +18,7 @@ set(LIB_SRC
         sylar/iomanager.cpp
         sylar/log.cpp
         sylar/scheduler.cpp
+        sylar/socket.cpp
         sylar/thread.cpp
         sylar/timer.cpp
         sylar/util.cpp)
@@ -77,6 +78,11 @@ add_executable(test_address tests/test_address.cpp)
 add_dependencies(test_address sylar)
 force_redefine_file_macro_for_sources(test_address)
 target_link_libraries(test_address ${LIB_LIB})
+
+add_executable(test_socket tests/test_socket.cpp)
+add_dependencies(test_socket sylar)
+force_redefine_file_macro_for_sources(test_socket)
+target_link_libraries(test_socket ${LIB_LIB})
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
