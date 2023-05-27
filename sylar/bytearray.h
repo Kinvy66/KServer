@@ -117,7 +117,7 @@ public:
 
 private:
     void addCapacity(size_t size);
-    size_t getCapacity() const { return m_capacity; }
+    size_t getCapacity() const { return m_capacity - m_position; }
 
 
 

@@ -34,27 +34,9 @@ void test() {
 #undef XX
 }
 
-void test01() {
-    std::vector<int8_t> vec;
-    for( int i = 0; i < 10;  ++i) {
-        vec.push_back(rand());
-    }
-    sylar::ByteArray::ptr ba(new sylar::ByteArray(1));
-    for (auto& i : vec) {
-        ba->writeFint8(i);
-    }
-    ba->setPosition(0);
-    for(size_t i = 0; i < vec.size(); ++i) {
-        int32_t  v = ba->readFint8();
-        SYLAR_ASSERT(v == vec[i]);
-    }
-    SYLAR_ASSERT(ba->getReadSize() == 0);
-    // SYLAR_LOG_INFO(g_logger) << "write_fun / read_fun (int8_t) len" <<
-
-}
 
 int main(int argc, char** argv) {
-    // test();
-    test01();
+    test();
+    // test01();
     return 0;
 }
