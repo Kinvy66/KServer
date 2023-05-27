@@ -412,6 +412,33 @@ usleep
 
 ## socket函数库
 
+```c++
+        +-----------+
+        |UnixAddress|
+        +-----+-----+
+              |                     ++IPv4Address
+        +-----+----+   +----------+ |
+        | Address  +---+ IPAddress+-+
+        +-----+----+   +----------+ |
+              |                     ++IPv6Address
+              |
+        +-----+----+
+        | Socket   |
+        +----------+
+
+```
+
+connect
+accept
+read/write/close
+
+## 序列化 bytearray
+这部份内容参考 TLV 编码和Varint编码
+
+
+write(int, float, int64, ...)
+read(int, float, int64, ...)
+
 
 
 ## http 协议开发
