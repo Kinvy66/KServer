@@ -361,10 +361,10 @@ void ByteArray::write(const void* buf, size_t size) {
     size_t ncap = m_cur->size - npos;
     size_t bpos = 0;
 
-    while (size > 0) {
-        if (ncap >= size)  {
-            memcpy(m_cur->ptr + npos, (const char*)buf + npos, size);
-            if (m_cur->size == (npos + size)) {
+    while(size > 0) {
+        if(ncap >= size) {
+            memcpy(m_cur->ptr + npos, (const char*)buf + bpos, size);
+            if(m_cur->size == (npos + size)) {
                 m_cur = m_cur->next;
             }
             m_position += size;
@@ -380,7 +380,8 @@ void ByteArray::write(const void* buf, size_t size) {
             npos = 0;
         }
     }
-    if (m_position > m_size) {
+
+    if(m_position > m_size) {
         m_size = m_position;
     }
 }
@@ -603,7 +604,7 @@ uint64_t ByteArray::getReadBuffers(std::vector<iovec> &buffers,
         --count;
     }
 
-    size_t ncap = m_cur->size - npos;
+    size_t ncap = cur->size - npos;
     struct iovec iov;
     while (len > 0) {
         if (ncap >= len) {

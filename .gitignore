@@ -36,5 +36,6 @@ build
 CMakeFiles
 bin/test*
 bin/*.txt
+bin/tmp
 lib
 doc/Others.md
