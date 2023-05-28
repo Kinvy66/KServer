@@ -56,7 +56,7 @@ Fiber::Fiber() {
     ++s_fiber_count;
 }
 
-Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool user_caller)
+Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool use_caller)
     :m_id(++s_fiber_id)
     , m_cb(cb) {
     ++s_fiber_count;
@@ -72,7 +72,7 @@ Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool user_caller)
     m_ctx.uc_stack.ss_sp = m_stack;
     m_ctx.uc_stack.ss_size = m_stacksize;
 
-    if (!user_caller) {
+    if (!use_caller) {
         makecontext(&m_ctx, &Fiber::MainFunc, 0);
     } else {
         makecontext(&m_ctx, &Fiber::CallerMainFunc, 0);
@@ -169,7 +169,7 @@ Fiber::ptr Fiber::GetThis() {
     return t_fiber->shared_from_this();
 }
 
-void Fiber::YieldToRead() {
+void Fiber::YieldToReady() {
     Fiber::ptr cur = GetThis();
     cur->m_state = READY;
     cur->swapOut();

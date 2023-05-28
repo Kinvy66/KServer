@@ -45,9 +45,9 @@ public:
      * @brief 构造函数，用于创建用户协程
      * @param cb 协程入口函数
      * @param stacksize 协程栈大小
-     * @param user_caller
+     * @param use_caller
      */
-    Fiber(std::function<void()> cb, size_t stacksize = 0, bool user_caller = false);
+    Fiber(std::function<void()> cb, size_t stacksize = 0, bool use_caller = false);
 
     /**
      * @brief 析构函数
@@ -103,7 +103,7 @@ public:
      * @brief 让出执行权，协程切换到后台，并且设置为Read状态
      * @note Read 状态协程可以再此被调用
      */
-    static void YieldToRead();
+    static void YieldToReady();
 
     /**
      * @brief 让出执行权，协程切换到后台，并且设置为Hold状态
