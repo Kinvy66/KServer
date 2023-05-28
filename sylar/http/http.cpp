@@ -15,7 +15,7 @@ HttpMethod StringToHttpMethod(const std::string& m) {
 
 HttpMethod CharsToHttpMethod(const char* m) {
 #define XX(num, name, string) \
-    if (strcmp(#string, m) == 0) { \
+    if (strncmp(#string, m, strlen(#string)) == 0) { \
         return HttpMethod::name;         \
     }
     HTTP_METHOD_MAP(XX)
@@ -138,7 +138,13 @@ bool HttpRequest::hasCookie(const std::string& key, std::string* val ) {
     return true;
 }
 
-std::ostream &HttpRequest::dump(std::ostream &os) {
+std::string HttpRequest::toSting() const {
+    std::stringstream ss;
+    dump(ss);
+    return ss.str();
+}
+
+std::ostream &HttpRequest::dump(std::ostream &os) const {
     // GET /url HTTP/1.1
     // Host: www.kinvy.cn
     //
@@ -191,7 +197,13 @@ void HttpResponse::delHeader(const std::string& key) {
     m_headers.erase(key);
 }
 
-std::ostream& HttpResponse::dump(std::ostream& os) {
+std::string HttpResponse::toSting() const {
+    std::stringstream ss;
+    dump(ss);
+    return ss.str();
+}
+
+std::ostream& HttpResponse::dump(std::ostream& os) const {
     os << "HTTP/"
        << ((uint32_t)(m_version >> 4))
        << "."

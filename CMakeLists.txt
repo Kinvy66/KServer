@@ -15,8 +15,11 @@ set(LIB_SRC
         sylar/config.cpp
         sylar/fd_manager.cpp
         sylar/fiber.cpp
+        sylar/http/http.cpp
+        sylar/http/http_parser.cpp
+        sylar/http/http11_parser.rl.cpp
+        sylar/http/httpclient_parser.rl.cpp
         sylar/hook.cpp
-        sylar/http.cpp
         sylar/iomanager.cpp
         sylar/log.cpp
         sylar/scheduler.cpp
@@ -95,6 +98,11 @@ add_executable(test_http tests/test_http.cpp)
 add_dependencies(test_http sylar)
 force_redefine_file_macro_for_sources(test_http)
 target_link_libraries(test_http ${LIB_LIB})
+
+add_executable(test_http_parser tests/test_http_parser.cpp)
+add_dependencies(test_http_parser sylar)
+force_redefine_file_macro_for_sources(test_http_parser)
+target_link_libraries(test_http_parser ${LIB_LIB})
 
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})

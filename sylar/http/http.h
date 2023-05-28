@@ -15,6 +15,8 @@
 #include <sstream>
 #include <boost/lexical_cast.hpp>
 
+
+
 namespace sylar {
 namespace http {
 /* Request Methods */
@@ -252,10 +254,8 @@ public:
         return getAs(m_headers, key, def);
     }
 
-    std::ostream& dump(std::ostream& os);
-
-private:
-
+    std::ostream& dump(std::ostream& os) const;
+    std::string toSting() const;
 
 private:
     HttpMethod m_method;
@@ -288,6 +288,7 @@ public:
     void setStatus(HttpStatus v) { m_status = v; }
     void setVersion(uint8_t v) { m_version = v; }
     void setBody(const std::string& v) { m_body = v; }
+    void setReason(const std::string& v) { m_reason = v; }
     void setHeaders(const MapType& v) { m_headers = v; }
 
     bool isClose() const { return m_close; }
@@ -307,7 +308,9 @@ public:
         return getAs(m_headers, key, def);
     }
 
-    std::ostream& dump(std::ostream& os);
+    std::ostream& dump(std::ostream& os) const;
+    std::string toSting() const;
+
 
 private:
     HttpStatus m_status;
@@ -317,6 +320,7 @@ private:
     std::string m_reason;
     MapType m_headers;
 };
+
 
 }
 }
