@@ -49,6 +49,8 @@ public:
     HttpResponse::ptr getData() const { return m_data; }
     void setError(int v) { m_error = v; }
 
+    uint64_t getContentLength();
+
 private:
     httpclient_parser m_parser;
     HttpResponse::ptr m_data;

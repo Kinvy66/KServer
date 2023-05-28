@@ -18,7 +18,7 @@ HttpMethod CharsToHttpMethod(const char* m) {
     if (strncmp(#string, m, strlen(#string)) == 0) { \
         return HttpMethod::name;         \
     }
-    HTTP_METHOD_MAP(XX)
+    HTTP_METHOD_MAP(XX);
 #undef XX
     return HttpMethod::INVALID_METHOD;
 }
@@ -49,8 +49,8 @@ const char* HttpStatusToString(const HttpStatus& s) {
     }
 }
 
-bool CaseInsensitiveLess::operator()(const std::string &lhs,
-                            const std::string &rhs) const {
+bool CaseInsensitiveLess::operator()(const std::string& lhs,
+                            const std::string& rhs) const {
     return strcasecmp(lhs.c_str(), rhs.c_str()) < 0;
 }
 
@@ -138,14 +138,14 @@ bool HttpRequest::hasCookie(const std::string& key, std::string* val ) {
     return true;
 }
 
-std::string HttpRequest::toSting() const {
+std::string HttpRequest::toString() const {
     std::stringstream ss;
     dump(ss);
     return ss.str();
 }
 
-std::ostream &HttpRequest::dump(std::ostream &os) const {
-    // GET /url HTTP/1.1
+std::ostream& HttpRequest::dump(std::ostream &os) const {
+    // GET /uri HTTP/1.1
     // Host: www.kinvy.cn
     //
     //
@@ -197,7 +197,7 @@ void HttpResponse::delHeader(const std::string& key) {
     m_headers.erase(key);
 }
 
-std::string HttpResponse::toSting() const {
+std::string HttpResponse::toString() const {
     std::stringstream ss;
     dump(ss);
     return ss.str();

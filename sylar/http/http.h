@@ -146,7 +146,6 @@ const char* HttpStatusToString(const HttpStatus& s);
 
 template<typename MapType, typename T>
 bool checkGetAs(const MapType& m, const std::string& key, T& val, const T& def = T()) {
-    std::string str;
     auto it = m.find(key);
     if (it == m.end()) {
         val = def;
@@ -230,7 +229,7 @@ public:
     }
 
     template<typename T>
-    bool getHeaderAs(const std::string& key, const T& def = T()) {
+    T getHeaderAs(const std::string& key, const T& def = T()) {
         return getAs(m_headers, key, def);
     }
 
@@ -240,7 +239,7 @@ public:
     }
 
     template<typename T>
-    bool getParamAs(const std::string& key, const T& def = T()) {
+    T getParamAs(const std::string& key, const T& def = T()) {
         return getAs(m_headers, key, def);
     }
 
@@ -250,12 +249,12 @@ public:
     }
 
     template<typename T>
-    bool getCookieAs(const std::string& key, const T& def = T()) {
+    T getCookieAs(const std::string& key, const T& def = T()) {
         return getAs(m_headers, key, def);
     }
 
     std::ostream& dump(std::ostream& os) const;
-    std::string toSting() const;
+    std::string toString() const;
 
 private:
     HttpMethod m_method;
@@ -304,12 +303,12 @@ public:
     }
 
     template<typename T>
-    bool getHeaderAs(const std::string& key, const T& def = T()) {
+    T getHeaderAs(const std::string& key, const T& def = T()) {
         return getAs(m_headers, key, def);
     }
 
     std::ostream& dump(std::ostream& os) const;
-    std::string toSting() const;
+    std::string toString() const;
 
 
 private:

@@ -9,10 +9,10 @@ namespace http {
 static sylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
 static sylar::ConfigVar<uint64_t>::ptr g_http_request_buffer_size =
         sylar::Config::Lookup("http.request.buffer_size"
-                              , (uint64_t)(4 * 1024ull), "http request buffer size");
+                              , (uint64_t)(4 * 1024), "http request buffer size");
 static sylar::ConfigVar<uint64_t>::ptr g_http_request_max_body_size =
         sylar::Config::Lookup("http.request.max_body_size"
-                , (uint64_t)(64 * 1024 * 1024ull), "http request max body size");
+                , (uint64_t)(64 * 1024 * 1024), "http request max body size");
 
 static uint64_t s_http_request_buffer_size = 0;
 static uint64_t s_http_request_max_body_size = 0;
@@ -76,6 +76,8 @@ void on_request_version(void *data, const char *at, size_t length) {
     if (strncmp(at, "HTTP/1.1", length) == 0) {
         v = 0x11;
     } else if (strncmp(at, "HTTP/1.0", length) == 0) {
+        v = 0x10;
+    } else {
         SYLAR_LOG_WARN(g_logger) << "invalid http request version: "
             << std::string(at, length);
         parser->setError(1001);
@@ -84,7 +86,7 @@ void on_request_version(void *data, const char *at, size_t length) {
     parser->getData()->setVersion(v);
 }
 
-void on_header_header_done(void *data, const char *at, size_t length) {
+void on_request_header_done(void *data, const char *at, size_t length) {
     // HttpRequestParser* parser = static_cast<HttpRequestParser*>(data);
 
 }
@@ -100,7 +102,7 @@ void on_header_header_done(void *data, const char *at, size_t length) {
     }
     parser->getData()->setHeader(std::string(field, flen)
                                  , std::string(value, vlen));
- }
+}
 
 
 HttpRequestParser::HttpRequestParser()
@@ -113,19 +115,19 @@ HttpRequestParser::HttpRequestParser()
     m_parser.request_path = on_request_path;
     m_parser.query_string = on_request_query;
     m_parser.http_version = on_request_version;
-    m_parser.header_done = on_header_header_done;
+    m_parser.header_done = on_request_header_done;
     m_parser.http_field = on_request_http_field;
     m_parser.data = this;
 }
 
 uint64_t HttpRequestParser::getContentLength() {
-    return m_data->getHeaderAs<uint64_t >("content-length", 0);
+    return m_data->getHeaderAs<uint64_t>("content-length", 0);
  }
 
 // 1： 成功
 // -1: 错误
 // >0: 已处理的字节数，且data有效为 len - v
-size_t HttpRequestParser::execute(char *data, size_t len) {
+size_t HttpRequestParser::execute(char* data, size_t len) {
      size_t offset = http_parser_execute(&m_parser, data, len, 0);
      memmove(data, data + offset, (len - offset));
      return offset;
@@ -204,14 +206,17 @@ HttpResponseParser::HttpResponseParser()
 
 }
 
-size_t HttpResponseParser::execute(char *data, size_t len) {
+uint64_t HttpResponseParser::getContentLength() {
+    return m_data->getHeaderAs<uint64_t >("content-length", 0);
+ }
+
+size_t HttpResponseParser::execute(char* data, size_t len) {
     size_t offset = httpclient_parser_execute(&m_parser, data, len, 0);
     memmove(data, data + offset, (len - offset));
     return offset;
 }
 
 int HttpResponseParser::isFinished() {
-    return httpclient_parser_finish(&m_parser);
     return httpclient_parser_finish(&m_parser);
 }
 
