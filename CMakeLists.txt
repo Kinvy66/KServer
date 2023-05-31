@@ -24,6 +24,8 @@ set(LIB_SRC
         sylar/log.cpp
         sylar/scheduler.cpp
         sylar/socket.cpp
+        sylar/socket_stream.cpp
+        sylar/stream.cpp
         sylar/tcp_server.cpp
         sylar/thread.cpp
         sylar/timer.cpp
