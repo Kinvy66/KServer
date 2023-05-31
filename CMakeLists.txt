@@ -24,6 +24,7 @@ set(LIB_SRC
         sylar/log.cpp
         sylar/scheduler.cpp
         sylar/socket.cpp
+        sylar/tcp_server.cpp
         sylar/thread.cpp
         sylar/timer.cpp
         sylar/util.cpp)
@@ -104,6 +105,15 @@ add_dependencies(test_http_parser sylar)
 force_redefine_file_macro_for_sources(test_http_parser)
 target_link_libraries(test_http_parser ${LIB_LIB})
 
+add_executable(test_tcp_server tests/test_tcp_server.cpp)
+add_dependencies(test_tcp_server sylar)
+force_redefine_file_macro_for_sources(test_tcp_server)
+target_link_libraries(test_tcp_server ${LIB_LIB})
+
+add_executable(echo_server examples/echo_server.cpp)
+add_dependencies(echo_server sylar)
+force_redefine_file_macro_for_sources(echo_server)
+target_link_libraries(echo_server ${LIB_LIB})
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 

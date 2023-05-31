@@ -34,8 +34,8 @@ depcomp
 cmake-build-debug
 build
 CMakeFiles
-bin/test*
-bin/*.txt
-bin/tmp
 lib
 doc/Others.md
+bin/*
+!bin/conf
+
