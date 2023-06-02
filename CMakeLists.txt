@@ -17,6 +17,7 @@ set(LIB_SRC
         sylar/fiber.cpp
         sylar/http/http.cpp
         sylar/http/http_parser.cpp
+        sylar/http/http_session.cpp
         sylar/http/http11_parser.rl.cpp
         sylar/http/httpclient_parser.rl.cpp
         sylar/hook.cpp
