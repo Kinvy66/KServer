@@ -107,7 +107,7 @@ void on_request_header_done(void *data, const char *at, size_t length) {
      HttpRequestParser* parser = static_cast<HttpRequestParser*>(data);
     if (flen == 0) {
         SYLAR_LOG_WARN(g_logger) << "invalid http request field length == 0";
-        parser->setError(1002);
+        // parser->setError(1002);
         return;
     }
     parser->getData()->setHeader(std::string(field, flen)
@@ -193,7 +193,7 @@ void on_response_http_field(void *data, const char *field, size_t flen
     HttpResponseParser* parser = static_cast<HttpResponseParser*>(data);
     if (flen == 0) {
         SYLAR_LOG_WARN(g_logger) << "invalid http response field length == 0";
-        parser->setError(1002);
+        // parser->setError(1002);
         return;
     }
     parser->getData()->setHeader(std::string(field, flen)
