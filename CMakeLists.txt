@@ -16,6 +16,7 @@ set(LIB_SRC
         sylar/fd_manager.cpp
         sylar/fiber.cpp
         sylar/http/http.cpp
+        sylar/http/http_connection.cpp
         sylar/http/http_parser.cpp
         sylar/http/http_session.cpp
         sylar/http/http_server.cpp
@@ -64,6 +65,7 @@ sylar_add_executable(test_http_parser "tests/test_http_parser.cpp" sylar "${LIBS
 sylar_add_executable(test_tcp_server "tests/test_tcp_server.cpp" sylar "${LIBS}")
 sylar_add_executable(echo_server "examples/echo_server.cpp" sylar "${LIBS}")
 sylar_add_executable(test_http_server "tests/test_http_server.cpp" sylar "${LIBS}")
+sylar_add_executable(test_http_connection "tests/test_http_connection.cpp" sylar "${LIBS}")
 
 
 #SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)

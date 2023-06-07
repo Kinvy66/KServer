@@ -10,12 +10,23 @@ static sylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
 static sylar::ConfigVar<uint64_t>::ptr g_http_request_buffer_size =
         sylar::Config::Lookup("http.request.buffer_size"
                               , (uint64_t)(4 * 1024), "http request buffer size");
+
 static sylar::ConfigVar<uint64_t>::ptr g_http_request_max_body_size =
         sylar::Config::Lookup("http.request.max_body_size"
                 , (uint64_t)(64 * 1024 * 1024), "http request max body size");
 
+static sylar::ConfigVar<uint64_t>::ptr g_http_response_buffer_size =
+        sylar::Config::Lookup("http.response.buffer_size"
+                , (uint64_t)(4 * 1024), "http response buffer size");
+
+static sylar::ConfigVar<uint64_t>::ptr g_http_response_max_body_size =
+        sylar::Config::Lookup("http.response.max_body_size"
+                , (uint64_t)(64 * 1024 * 1024), "http response max body size");
+
 static uint64_t s_http_request_buffer_size = 0;
 static uint64_t s_http_request_max_body_size = 0;
+static uint64_t s_http_response_buffer_size = 0;
+static uint64_t s_http_response_max_body_size = 0;
 
 uint64_t HttpRequestParser::GetHttpRequestBufferSize() {
     return s_http_request_buffer_size;
@@ -25,12 +36,22 @@ uint64_t HttpRequestParser::GetHttpRequestMaxBodySize() {
     return s_http_request_max_body_size;
 }
 
+uint64_t HttpResponseParser::GetHttpResponseBufferSize() {
+    return s_http_response_buffer_size;
+}
+
+uint64_t HttpResponseParser::GetHttpResponseMaxBodySize() {
+    return s_http_response_max_body_size;
+}
+
 
 namespace  {
 struct _RequestSizeIniter {
     _RequestSizeIniter() {
         s_http_request_buffer_size = g_http_request_buffer_size->getValue();
         s_http_request_max_body_size = g_http_request_max_body_size->getValue();
+        s_http_response_buffer_size = g_http_response_buffer_size->getValue();
+        s_http_response_max_body_size = g_http_response_max_body_size->getValue();
 
         g_http_request_buffer_size->addListener(
                 [](const uint64_t& ov, const uint64_t& nv){
@@ -39,6 +60,14 @@ struct _RequestSizeIniter {
         g_http_request_max_body_size->addListener(
                 [](const uint64_t& ov, const uint64_t& nv){
                     s_http_request_max_body_size = nv;
+                });
+        g_http_response_buffer_size->addListener(
+                [](const uint64_t& ov, const uint64_t& nv){
+                    s_http_response_buffer_size = nv;
+                });
+        g_http_response_max_body_size->addListener(
+                [](const uint64_t& ov, const uint64_t& nv){
+                    s_http_response_max_body_size = nv;
                 });
     }
 };

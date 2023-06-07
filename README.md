@@ -123,7 +123,7 @@ Config 通过静态方法返回静态成员，能够确保在其他成员初始�
 
 
 
-配置系统的原则，约定优于配置：
+配置系统的原则，[约定优于配置](https://zh.wikipedia.org/wiki/%E7%BA%A6%E5%AE%9A%E4%BC%98%E4%BA%8E%E9%85%8D%E7%BD%AE)：
 
 ```c++
 template<T, FromStr, ToStr>
@@ -140,7 +140,7 @@ LexicalCast;
 ```
 
 自定义类型需要实现 sylar::LexicalCast偏特化
-驶行定义后，就可以支持Config解析自定义类型，自定义类型可以和常规stl容器一起使用
+实现定义后，就可以支持Config解析自定义类型，自定义类型可以和常规stl容器一起使用
 
 配置的事件机制
 当一个配置项发生修改的时候，可以反向通知对应的代码，回调
@@ -199,16 +199,16 @@ logs:
 
 
 
-## 3. 协程库封装
 
 
 
-### 3.1 线程
-线程使用C++11的线程，互斥量使用的是pthread
+
+## 3 线程模块
+~线程使用C++11的线程，互斥量使用的是pthread~
 Thread 类
 
 
-#### 线程同步
+### 线程同步
 线程同步的使用使用了区域锁(Scoped locking) 的方法，
 它是RAII(Resource Acquisition Is Initialization)的一种具体应用
 对象在构造函数初始化，在析构函数释放，
@@ -322,7 +322,9 @@ void Logger::setFormatter(const std::string &val) {
 }
 ```
 
-### 3.2 协程库封装
+## 4 协程模块
+
+### 协程实现
 定义协程接口
 ucontext_t, macro
 
@@ -343,7 +345,7 @@ Thread-> main_fiber <--------> sub_fiber
 
 
 
-### 3.3 协程调度模块 scheduler
+###  协程调度模块 scheduler
 
 ```c++
         1 - N       1 - M
@@ -405,13 +407,19 @@ Timer -> addTimer() --> cancel()
             [Scheduler] <---- [IOManager(epoll)]   
 ```
 
-## HOOK
+## 5. IO协程调度模块
+
+
+### 定时器
+
+## 6. HOOK
 sleep,
 usleep
 
 
-## socket函数库
+## 7. socket函数库
 
+### 地址解析
 ```c++
         +-----------+
         |UnixAddress|
@@ -432,7 +440,9 @@ connect
 accept
 read/write/close
 
-## 序列化 bytearray
+### socket 封装
+
+## 8. 序列化 bytearray
 这部份内容参考 TLV 编码和Varint编码
 
 
@@ -441,25 +451,11 @@ read(int, float, int64, ...)
 
 
 
-## http 协议开发
+## 9.http 协议开发
 
 
 
 
-
-## 分布协议
-
-
-
-
-
-## 推荐系统
-
-
-
-
-
-## 聊天软件
 
 
 
