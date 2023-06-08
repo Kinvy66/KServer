@@ -580,11 +580,13 @@ public:
 
 private:
     MutexType m_mutex;
-    std::map<std::string, Logger::ptr> m_loggers;   // 日志容器
-    Logger::ptr m_root;     // 主日志器，默认设定的是StdoutAppender
+    /// 日志容器
+    std::map<std::string, Logger::ptr> m_loggers;
+    /// 主日志器，默认设定的是StdoutAppender
+    Logger::ptr m_root;
 };
 
-// 日志器管理类单例模式
+/// 日志器管理类单例模式
 typedef sylar::Singleton<LoggerManager> LoggerMgr;
 
 }

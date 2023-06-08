@@ -14,8 +14,8 @@
 static sylar::Logger::ptr g_logger = SYLAR_LOG_ROOT();
 
 void run() {
-    sylar::Address::ptr addr = sylar::Address::LookupAnyIPAddress("www.sylar.top:80");
-    // sylar::Address::ptr addr = sylar::Address::LookupAnyIPAddress("www.kinvy.cn:80");
+    // sylar::Address::ptr addr = sylar::Address::LookupAnyIPAddress("www.sylar.top:80");
+    sylar::Address::ptr addr = sylar::Address::LookupAnyIPAddress("www.baidu.com:80");
     if (!addr) {
         SYLAR_LOG_INFO(g_logger) << "get addr error";
         return;
@@ -29,8 +29,8 @@ void run() {
     }
     sylar::http::HttpConnection::ptr conn(new sylar::http::HttpConnection(sock));
     sylar::http::HttpRequest::ptr req(new sylar::http::HttpRequest);
-    req->setHeader("host", "www.sylar.top");
-    // req->setHeader("host", "www.kinvy.cn");
+    // req->setHeader("host", "www.sylar.top");
+    req->setHeader("host", "www.baidu.com");
     SYLAR_LOG_INFO(g_logger) << "req: " << std::endl
         << *req;
     conn->sendRequest(req);
@@ -42,6 +42,8 @@ void run() {
     }
     SYLAR_LOG_INFO(g_logger) << "rsp:" << std::endl
         << *rsp;
+    std::ofstream ofs("rsp.data");
+    ofs << *rsp;
 }
 
 int main(int argc, char** argv) {
