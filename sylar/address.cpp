@@ -169,7 +169,7 @@ bool Address::Lookup(std::vector<Address::ptr> &result, const std::string &host,
     if(error) {
         SYLAR_LOG_ERROR(g_logger) << "Address::Lookup getaddress(" << host << ","
             << family << ", " << type << ") err=" << error << " errstr="
-            << strerror(errno);
+            << strerror(error);
         return false;
     }
 
