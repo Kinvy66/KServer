@@ -1,12 +1,12 @@
 # C++ 服务器框架开发
 
-参考： https://github.com/sylar-yin/sylar
+本项目来源： https://github.com/sylar-yin/sylar
 
 ## 环境
 
 - WSL2-- Ubuntu20 (GCC 9.4)
 - Clion 2023
-- CMake
+- CMake 3.16.3
 
 
 

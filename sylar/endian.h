@@ -1,9 +1,9 @@
 /**
-* @file: endian.h
-* @brief: 字节序转换
-* @author: Kinvy.Qiu
-* @email: Kinvy66@163.com
-* @date: 2023/5/13 
+* @file endian.h
+* @brief 字节序操作函数(大端/小端)
+* @author Kinvy
+* @email Kinvy66@163.com
+* @date 2023-5-13
 */
 #ifndef __SYLAR_ENDIAN_H
 #define __SYLAR_ENDIAN_H
@@ -13,22 +13,30 @@
 
 #include <byteswap.h>
 #include <stdint.h>
-#include <type_traits>
 
 namespace sylar {
 
+/**
+ * @brief 8字节类型的字节序转化
+ */
 template<typename T>
 typename std::enable_if<sizeof(T) == sizeof(uint64_t), T>::type
 byteswap(T value) {
     return (T) bswap_64((uint64_t)value);
 }
 
+/**
+ * @brief 4字节类型的字节序转化
+ */
 template<typename T>
 typename std::enable_if<sizeof(T) == sizeof(uint32_t), T>::type
 byteswap(T value) {
     return (T) bswap_32((uint32_t)value);
 }
 
+/**
+ * @brief 2字节类型的字节序转化
+ */
 template<typename T>
 typename std::enable_if<sizeof(T) == sizeof(uint16_t), T>::type
 byteswap(T value) {
@@ -42,22 +50,36 @@ byteswap(T value) {
 #endif
 
 #if SYLAR_BYTE_ORDER == SYLAR_BIG_ENDIAN
+
+/**
+ * @brief 只在小端机器上执行byteswap, 在大端机器上什么都不做
+ */
 template<typename T>
 T byteswapOnLittleEndian(T t) {
     return t;
 }
 
+/**
+ * @brief 只在大端机器上执行byteswap, 在小端机器上什么都不做
+ */
 template<typename T>
 T byteswapOnBigEndian(T t) {
     return byteswap(t);
 }
 
 #else
+
+/**
+ * @brief 只在小端机器上执行byteswap, 在大端机器上什么都不做
+ */
 template<typename T>
 T byteswapOnLittleEndian(T t) {
     return byteswap(t);
 }
 
+/**
+ * @brief 只在大端机器上执行byteswap, 在小端机器上什么都不做
+ */
 template<typename T>
 T byteswapOnBigEndian(T t) {
     return t;

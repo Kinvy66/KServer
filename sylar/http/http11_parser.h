@@ -1,4 +1,10 @@
-
+/**
+ * @file bytearray.h
+ * @brief 二进制数组(序列化/反序列化)
+ * @author Kinvy
+ * @email Kinvy66@163.com
+ * @date 2023-5-28
+ */
 #ifndef http11_parser_h
 #define http11_parser_h
 

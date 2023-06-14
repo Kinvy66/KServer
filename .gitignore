@@ -12,6 +12,7 @@ ltmain.sh
 *.pb.h
 *.pb.cc
 *.rl.cc
+*.rl.cpp
 aclocal.m4
 autom4te.cache
 config.h.in
@@ -28,6 +29,10 @@ stamp-h1
 *.pc
 depcomp
 *.xcodeproj
+
+#doxygen
+html
+latex
 
 #.idea
 .vscode

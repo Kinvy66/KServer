@@ -1,9 +1,9 @@
 /**
-* @author: Kinvy
-* @email: Kinvy66@163.com
-* @date: 2023/4/2 14:28
-* @file: config.h
-* @description: 
+* @file config.h
+* @brief 配置模块
+* @author Kinvy
+* @email Kinvy66@163.com
+* @date 2023-4-2
 */
 #ifndef __SYLAR_CONFIG_H
 #define __SYLAR_CONFIG_H
@@ -36,8 +36,8 @@ public:
     typedef std::shared_ptr<ConfigVarBase> ptr;
     /**
      * @brief 构造函数
-     * @param name 配置参数名称[0-9a-z_.]
-     * @param description 配置参数描述
+     * @param[in] name 配置参数名称[0-9a-z_.]
+     * @param[in] description 配置参数描述
      */
     ConfigVarBase(const std::string& name, const std::string description = "")
         : m_name(name)
@@ -53,7 +53,6 @@ public:
 
     /**
      * @brief 返回配置参数名称
-     * @return 配置参数名称
      */
     const std::string& getName() const { return m_name; }
 
@@ -77,8 +76,6 @@ public:
      * @brief 返回配置参数值的类型名称
      */
     virtual std::string getTypeName() const = 0;
-
-
 protected:
     /// 配置参数的名称
     std::string m_name;
@@ -97,7 +94,7 @@ class LexicalCast {
 public:
     /**
      * @brief 类型转换
-     * @param v 源类型值
+     * @param[in] v 源类型值
      * @return 返回v转换后的目标类型
      * @exception 当类型不可转换时抛出异常
      */
@@ -108,6 +105,7 @@ public:
 
 /**
  * @brief 类型转换模板类偏特化(YAML String 转换成 std::vector<T>)
+ * @tparam T 目标类型
  */
 template<typename T>
 class LexicalCast<std::string, std::vector<T> > {
@@ -126,8 +124,9 @@ public:
 };
 
 /**
- * @brief 类型转换模板类片特化(std::vector<T> 转换成 YAML String)
- */
+* @brief 类型转换模板类偏特化(std::vector<T> 转换成 YAML String)
+* @tparam T 源类型
+*/
 template<typename T>
 class LexicalCast<std::vector<T>, std::string> {
 public:
@@ -144,7 +143,8 @@ public:
 };
 
 /**
- * @brief 类型转换模板类片特化(YAML String 转换成 std::list<T>)
+ * @brief 类型转换模板类偏特化(YAML String 转换成 std::list<T>)
+ * @tparam T 目标类型
  */
 template<typename T>
 class LexicalCast<std::string, std::list<T> > {
@@ -164,7 +164,7 @@ public:
 
 /**
  * @brief 类型转换模板类片特化(std::list<T> 转换成 YAML String)
- * @tparam T
+ * @tparam T 源类型
  */
 template<typename T>
 class LexicalCast<std::list<T>, std::string> {
@@ -183,6 +183,7 @@ public:
 
 /**
  * @brief  类型转换模板类片特化(YAML String 转换成 std::set<T>)
+ * @tparam T 目标类型
  */
 template<typename T>
 class LexicalCast<std::string, std::set<T> > {
@@ -202,7 +203,7 @@ public:
 
 /**
  * @brief 类型转换模板类片特化(std::set<T>  转换成 YAML String)
- * @tparam
+ * @tparam T 源类型
  */
 template<typename T>
 class LexicalCast<std::set<T>, std::string> {
@@ -222,6 +223,7 @@ public:
 
 /**
  * @brief 类型转换模板类片特化(YAML String 转换成 std::unordered_set<T>)
+ * @tparam T 目标类型
  */
 template<typename T>
 class LexicalCast<std::string, std::unordered_set<T> > {
@@ -241,6 +243,7 @@ public:
 
 /**
  * @brief 类型转换模板类片特化(std::unordered_set<T> 转换成 YAML String)
+ * @tparam T 源类型
  */
 template<typename T>
 class LexicalCast<std::unordered_set<T>, std::string> {
@@ -259,7 +262,7 @@ public:
 
 /**
  * @brief 类型转换模板类片特化(YAML String 转换成 std::map<std::string, T>)
- * @tparam T
+ * @tparam T 目标类型
  */
 template<typename T>
 class LexicalCast<std::string, std::map<std::string, T> > {
@@ -281,6 +284,7 @@ public:
 
 /**
  * @brief 类型转换模板类片特化(std::map<std::string, T> 转换成 YAML String)
+ * @tparam T 源类型
  */
 template<typename T>
 class LexicalCast< std::map<std::string, T>, std::string> {
@@ -299,6 +303,7 @@ public:
 
 /**
  * @brief 类型转换模板类片特化(YAML String 转换成 std::unordered_map<std::string, T>)
+ * @tparam T 目标类型
  */
 template<typename T>
 class LexicalCast<std::string, std::unordered_map<std::string, T> > {
@@ -320,6 +325,8 @@ public:
 
 /**
  * @brief 类型转换模板类片特化(std::unordered_map<std::string, T> 转换成 YAML String)
+ * @tparam T 源类型
+ *
  */
 template<typename T>
 class LexicalCast< std::unordered_map<std::string, T>, std::string> {
@@ -349,7 +356,9 @@ public:
  *          实现类型 T 和 字符串(std:string)之间转换
  *          std::string 为YAML格式的字符串
  *          toString 和 fromString 的实现是调用函数对象 LexicalCast< T, F>
- *
+ *          FromStr T operator()(const std::string&)
+ *          ToStr std::string operator()(const T&)
+ *          目标特例化
  */
 template<typename T, typename FromStr = LexicalCast<std::string, T>,
         typename ToStr = LexicalCast<T, std::string> >
@@ -361,9 +370,9 @@ public:
 
     /**
      * @brief 通过参数名,参数值,描述构造ConfigVar
-     * @param name 参数名称有效字符为[0-9a-z_.]
-     * @param default_value 参数的默认值
-     * @param description 参数的描述
+     * @param[in] name 参数名称有效字符为[0-9a-z_.]
+     * @param[in] default_value 参数的默认值
+     * @param[in] description 参数的描述
      */
     ConfigVar(const std::string& name,
               const T& default_value,
@@ -391,7 +400,7 @@ public:
 
     /**
      * @brief 从YAML String 转成参数的值，并设置到对应的配置项
-     * @param val YAML string 字符串
+     * @param[in] val YAML string 字符串
      * @exception 当转换失败抛出异常
      */
     bool fromString(const std::string& val) override {
@@ -415,7 +424,7 @@ public:
 
     /**
      * @brief 设置当前参数的值
-     * @param v 设置值
+     * @param[in] v 设置值
      * @details 如果参数的值有发生变化,则通知对应的注册回调函数
      */
     void setValue(const T& v) {
@@ -440,8 +449,8 @@ public:
     // TODO: 该方法需要改动
     /**
      * @brief 添加变化回调函数
-     * @param key
-     * @param cb
+     * @param[in] cb 回调函数
+     * @return 返回该回调函数对应的唯一id,用于删除回调
      */
     uint64_t addListener(on_change_cb cb) {
         static uint64_t s_fun_id = 0;
@@ -453,7 +462,7 @@ public:
 
     /**
      * @brief 删除回调函数
-     * @param key 回调函数的唯一id
+     * @param[in] key 回调函数的唯一id
      */
     void delListener(uint64_t key) {
         RWMutexType::WriteLock lock(m_mutex);
@@ -462,7 +471,7 @@ public:
 
     /**
      * @brief 获取回调函数
-     * @param key 回调函数的唯一id
+     * @param[in] key 回调函数的唯一id
      * @return 如果存在返回对应的回调函数,否则返回nullptr
      */
     on_change_cb getListener(uint64_t key) {
@@ -478,11 +487,10 @@ public:
         RWMutexType::WriteLock lock(m_mutex);
         m_cbs.clear();
     }
-
 private:
     RWMutexType m_mutex;
     T m_val;
-    // 变更回调函数数组，uint64_t key: 要求唯一，一般用hash
+    /// 变更回调函数数组，uint64_t key: 要求唯一，一般用hash
     std::map<uint64_t , on_change_cb> m_cbs;
 };
 
@@ -524,13 +532,11 @@ public:
                 return nullptr;
             }
         }
-
         if (name.find_first_not_of("abcdefghijklmnopqrstuvwxyz._0123456789")
                 != std::string::npos) {
             SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << "Lookup name invalid " << name;
             throw std::invalid_argument(name);
         }
-
         // 不存在的配置，添加
         typename ConfigVar<T>::ptr  v(new ConfigVar<T>(name, default_value, description));
         GetDatas()[name] = v;
@@ -540,7 +546,7 @@ public:
     /**
      * @brief 查找配置参数
      * @tparam T
-     * @param name 配置参数名称
+     * @param[in] name 配置参数名称
      * @return 返回配置参数名为name的配置参数
      */
     template<typename T>
@@ -560,18 +566,29 @@ public:
 
     /**
      * @brief 查找配置参数,返回配置参数的基类
-     * @param name 配置参数名称
+     * @param[in] name 配置参数名称
      */
     static ConfigVarBase::ptr LookupBase(const std::string& name);
 
+    /**
+     * @brief 遍历配置模块里面所有配置项
+     * @param[in] cb 配置项回调函数
+     */
     static void Visit(std::function<void(ConfigVarBase::ptr)> cb);
-
 private:
-    // TODO(NOTE) 这两个静态方法是为了确保在使用之前就能够构建出相应的对象
+    /**
+     * @brief 返回所有的配置项
+     * @note 这个静态方法是为了确保在使用之前就能够构建出相应的对象
+     */
     static ConfigVarMap& GetDatas() {
         static ConfigVarMap s_datas;
         return s_datas;
     }
+
+    /**
+     * @brief 配置项的RWMutex
+     * @note 这个静态方法是为了确保在使用之前就能够构建出相应的对象
+     */
     static RWMutexType& GetMutex() {
         static RWMutexType s_mutex;
         return s_mutex;

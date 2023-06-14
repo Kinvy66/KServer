@@ -1,9 +1,9 @@
 /**
-* @file: hook.h
-* @brief: 
-* @author: Kinvy.Qiu
-* @email: Kinvy66@163.com
-* @date: 2023/5/9 
+* @file hook.h
+* @brief hook函数封装
+* @author Kinvy
+* @email Kinvy66@163.com
+* @date 2023-5-9
 */
 #ifndef __SYLAR_HOOK_H
 #define __SYLAR_HOOK_H
@@ -16,7 +16,14 @@
 #include <sys/ioctl.h>
 
 namespace sylar {
+    /**
+     * @brief 当前线程是否hook
+     */
     bool is_hook_enable();
+
+    /**
+     * @brief 设置当前线程的hook状态
+     */
     void set_hook_enable(bool flag);
 }
 
