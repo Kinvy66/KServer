@@ -51,6 +51,7 @@ std::string BacktraceToString(int size, int skip,  const std::string& prefix) {
     for (size_t i = 0; i < bt.size(); ++i) {
         ss << prefix << bt[i] << std::endl;
     }
+    // TODO 将调用栈信息转换为可读的函数签名 c++filt
     return ss.str();
 }
 
