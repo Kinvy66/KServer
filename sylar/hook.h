@@ -14,6 +14,7 @@
 #include <sys/socket.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
+#include <cstdint>
 
 namespace sylar {
     /**

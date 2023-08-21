@@ -446,9 +446,8 @@ public:
      */
     std::string getTypeName() const override { return typeid(T).name(); }
 
-    // TODO: 该方法需要改动
     /**
-     * @brief 添加变化回调函数
+     * @brief 配置项添加变化回调函数
      * @param[in] cb 回调函数
      * @return 返回该回调函数对应的唯一id,用于删除回调
      */

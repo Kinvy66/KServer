@@ -43,8 +43,6 @@ LogLevel::Level LogLevel::FromString(const std::string& str) {
 #undef XX
 }
 
-
-
 class MessageFormatItem : public LoggerFormatter::FormatItem{
 public:
     MessageFormatItem(const std::string& str="") {}
@@ -757,6 +755,7 @@ struct LogIniter {
 
 /**
  * @brief 静态对象在执行main之前就会执行构造函数LogIniter()
+ * @node __log_init 对象是用于注册一个配置变更的监听回调
  */
 static LogIniter __log_init;
 

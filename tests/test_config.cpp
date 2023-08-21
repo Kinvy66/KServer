@@ -189,7 +189,7 @@ void test_class() {
         SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "before: " \
         << i.first << " - " << i.second.toString(); \
     }   \
-    SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << prefix << ": size=" << m.size();    \
+    SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << (prefix) << ": size=" << m.size();    \
     }
 
     g_person->addListener([] (const Person& old_value, const Person& new_value) {
@@ -235,7 +235,8 @@ void test_log() {
 
 
 int main(int argc, char** argv) {
-    test_yaml();
+    // test_yaml();
+    test_config();
     // // test_config_simple();
     // // test_class();
     // test_log();

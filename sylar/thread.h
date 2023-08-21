@@ -15,6 +15,7 @@
 #include <semaphore.h>
 #include <cstdint>
 #include <atomic>
+#include <string>
 
 #include "noncopyable.h"
 

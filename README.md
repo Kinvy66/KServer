@@ -204,9 +204,9 @@ logs:
 
 
 ## 3 线程模块
-~线程使用C++11的线程，互斥量使用的是pthread~
-Thread 类
+~~线程使用C++11的线程，互斥量使用的是pthread~~
 
+Thread 类
 
 ### 线程同步
 线程同步的使用使用了区域锁(Scoped locking) 的方法，
