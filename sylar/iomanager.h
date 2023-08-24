@@ -34,13 +34,13 @@ public:
     };
 private:
     /**
-     * @brief Socket事件上线文类
+     * @brief Socket事件上下文类
      */
     struct FdContext {
         typedef Mutex MutexType;
 
         /**
-         * @brief 事件上线文类
+         * @brief 事件上下文类
          */
         struct  EventContext {
             /// 事件执行的调度器
@@ -154,7 +154,7 @@ protected:
 private:
     /// epoll 文件句柄
     int m_epfd = 0;
-    /// pipe 文件句柄
+    /// pipe 文件句柄(管道)
     int m_tickleFds[2];
     /// 当前等待执行的事件数量
     std::atomic<size_t> m_pendingEventCount = {0};

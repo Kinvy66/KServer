@@ -52,6 +52,7 @@ void test_fiber() {
 
 void test1() {
     sylar::IOManager iom(2, false);
+
     iom.schedule(&test_fiber);
 }
 

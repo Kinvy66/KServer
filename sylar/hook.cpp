@@ -70,9 +70,6 @@ bool is_hook_enable() {
 void set_hook_enable(bool flag) {
     t_hook_enable = flag;
 }
-
-
-
 }
 
 struct time_info {
