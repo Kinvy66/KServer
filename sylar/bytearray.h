@@ -120,7 +120,7 @@ public:
     void writeFuint64   (uint64_t value);
 
     /**
-     * @brief 写入有符号Varint32类型的数据
+     * @brief 写入有符号可变长度Varint32类型的数据， Zigzag编码
      * @post m_position += 实际占用内存(1 ~ 5)
      *       如果m_position > m_size 则 m_size = m_position
      */

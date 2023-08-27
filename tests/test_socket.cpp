@@ -50,8 +50,8 @@ void test_socket() {
  }
 
 int main(int argc, char** argv) {
-    // sylar::IOManager iom;
-    // iom.schedule(&test_socket);
-    test_socket();
+    sylar::IOManager iom;
+    iom.schedule(&test_socket);
+    // test_socket();
     return 0;
 }
