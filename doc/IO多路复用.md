@@ -89,7 +89,7 @@ int poll(struct pollfd *fds, nfds_t nfds, int timeout);
 
 ## epoll
 
-epoll 的操作函数
+### epoll 的操作函数
 ```c++
 #include <sys/epoll.h>
 // 创建epoll实例，通过一棵红黑树管理待检测集合
@@ -99,4 +99,14 @@ int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
 // 检测epoll树中是否有就绪的文件描述符
 int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);
 ```
+
+### 操作步骤
+
+
+
+
+### 工作模式
+
+
+
 
