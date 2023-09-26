@@ -14,6 +14,7 @@ set(LIB_SRC
         sylar/bytearray.cpp
         sylar/config.cpp
         sylar/daemon.cpp
+        sylar/env.cpp
         sylar/fd_manager.cpp
         sylar/fiber.cpp
         sylar/http/http.cpp
@@ -70,6 +71,7 @@ sylar_add_executable(test_http_server "tests/test_http_server.cpp" sylar "${LIBS
 sylar_add_executable(test_http_connection "tests/test_http_connection.cpp" sylar "${LIBS}")
 sylar_add_executable(test_uri "tests/test_uri.cpp" sylar "${LIBS}")
 sylar_add_executable(test_daemon "tests/test_daemon.cpp" sylar "${LIBS}")
+sylar_add_executable(test_env "tests/test_env.cpp" sylar "${LIBS}")
 sylar_add_executable(my_http_server "samples/my_http_server.cpp" sylar "${LIBS}")
 
 #SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
