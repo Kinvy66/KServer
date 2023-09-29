@@ -8,6 +8,12 @@
 - Clion 2023
 - CMake 3.16.3
 
+```bash
+sudo apt install libboost-all-dev
+sudo apt-get install libyaml-cpp-dev  
+sudo apt install ragel   
+```
+
 
 
 ## 项目环境
