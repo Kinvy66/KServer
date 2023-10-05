@@ -22,7 +22,9 @@ bool Env::init(int argc, char** argv) {
     char path[1024] = {0};
     sprintf(link, "/proc/%d/exe", getpid());
     readlink(link, path, sizeof(path));
+    // /path/xxx/exe
     m_exe = path;
+
     auto pos = m_exe.find_last_of("/");
     m_cwd = m_exe.substr(0, pos) + "/";
 
@@ -107,7 +109,7 @@ void Env::printHelp() {
 }
 
 bool Env::setEnv(const std::string& key, const std::string& val) {
-    return setenv(key.c_str(), val.c_str(), 1);
+    return !setenv(key.c_str(), val.c_str(), 1);
 }
 
 std::string Env::getEnv(const std::string& key, const std::string& default_val) {
