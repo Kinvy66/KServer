@@ -1,0 +1,18 @@
+logs:
+  - name: root
+    level: INFO
+    formatter: "%d%T%m%n"
+    appenders:
+      - type: FileLogAppender
+        file: root.txt
+      - type: StdoutLogAppender
+  - name: system
+    level: DEBUG
+    formatter: "%d%T%m%n"
+    appenders:
+      - type: FileLogAppender
+        file: system.txt
+        formatter: "%d%T[%p]%T%m%n"
+      - type: StdoutLogAppender
+system:
+  port: 8888

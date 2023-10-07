@@ -9,6 +9,7 @@
 #include "sylar/config.h"
 #include "sylar/log.h"
 #include <yaml-cpp/yaml.h>
+#include "sylar/env.h"
 
 sylar::ConfigVar<int>::ptr  g_int_value_config =
         sylar::Config::Lookup("system.port", (int)8080, "system port");
@@ -233,18 +234,27 @@ void test_log() {
 
 }
 
+void test_loadconf() {
+    sylar::Config::LoadFromConfDir("conf");
+}
+
 
 int main(int argc, char** argv) {
     // test_yaml();
-    test_config();
-    // // test_config_simple();
-    // // test_class();
+    // test_config();
+    // test_config_simple();
+    // test_class();
     // test_log();
-    // sylar::Config::Visit([](sylar::ConfigVarBase::ptr var) {
-    //     SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "name=" << var->getName()
-    //                              << " description=" << var->getDescription()
-    //                              << " typename=" << var->getTypeName()
-    //                              << " value=" << var->toString();
-    // });
+    sylar::EnvMgr::GetInstance()->init(argc, argv);
+    test_loadconf();
+    std::cout << " ==== " << std::endl;
+    test_loadconf();
+    return 0;
+    sylar::Config::Visit([](sylar::ConfigVarBase::ptr var) {
+        SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "name=" << var->getName()
+                                 << " description=" << var->getDescription()
+                                 << " typename=" << var->getTypeName()
+                                 << " value=" << var->toString();
+    });
     return 0;
 }

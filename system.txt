@@ -1,0 +1,12 @@
+2023-10-07 09:46:43	[INFO]	LoadConfFIle file=/home/kinvy/dev/sylar/bin/conf/test.yml ok
+2023-10-07 09:49:32	[INFO]	LoadConfFIle file=/home/kinvy/dev/sylar/bin/conf/test.yml ok
+2023-10-07 09:52:53	[INFO]	LoadConfFIle file=/home/kinvy/dev/sylar/bin/conf/test.yml ok
+2023-10-07 09:53:09	[INFO]	LoadConfFIle file=/home/kinvy/dev/sylar/bin/conf/test.yml ok
+2023-10-07 09:54:07	[INFO]	LoadConfFIle file=/home/kinvy/dev/sylar/bin/conf/log.yml ok
+2023-10-07 09:54:07	[INFO]	LoadConfFIle file=/home/kinvy/dev/sylar/bin/conf/test.yml ok
+2023-10-07 10:07:26	[INFO]	LoadConfFIle file=/home/kinvy/dev/sylar/bin/conf/log.yml ok
+2023-10-07 10:07:26	[INFO]	LoadConfFIle file=/home/kinvy/dev/sylar/bin/conf/test.yml ok
+2023-10-07 10:07:26	[INFO]	ListAllFile path=/home/kinvy/dev/sylar/bin/conf
+2023-10-07 10:07:26	[INFO]	ListAllFile path=/home/kinvy/dev/sylar/bin/conf/xx
+2023-10-07 10:08:57	[INFO]	LoadConfFIle file=/home/kinvy/dev/sylar/bin/conf/log.yml ok
+2023-10-07 10:08:57	[INFO]	LoadConfFIle file=/home/kinvy/dev/sylar/bin/conf/test.yml ok
